@@ -10,9 +10,10 @@
 </template>
 
 <script>
-import PostMeta from '@/components/PostMeta.vue'
 import axios from 'axios'
+import {AUTHOR, REPO, API_PREFIX} from '@/config.js'
 import util from '@/util.js'
+import PostMeta from '@/components/PostMeta.vue'
 
 export default {
   name: 'home',
@@ -46,17 +47,17 @@ export default {
   },
   methods: {
     doSearch (kw, fn) {
-      const url = `https://api.github.com/search/issues`
+      const url = `${API_PREFIX}/search/issues`
       axios.get(url, {
         params: {
-          q: `${kw} user:manxisuo repo:manxisuo/blog author:manxisuo type:issue in:title,body`
+          q: `${kw} user:${AUTHOR} repo:${REPO} author:${AUTHOR} type:issue in:title,body`
         }
       }).then(resp => {
         fn(resp.data.items)
       })
     },
     doQueryAll (fn) {
-      const url = 'https://api.github.com/repos/manxisuo/blog/issues'
+      const url = `${API_PREFIX}/repos/${REPO}/issues`
       axios(url).then(resp => {
         fn(resp.data)
       })

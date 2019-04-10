@@ -5,6 +5,7 @@
         :title="post.title"
         :content="post.content"
         :tags="post.tags" />
+      <el-alert v-if="errored" title="文章不存在" type="info" />
     </div>
     <div>
       <h2 v-if="comments.length">评论：</h2>
@@ -19,10 +20,11 @@
 </template>
 
 <script>
+import axios from 'axios'
+import {REPO, ABOUT_NUMBER, API_PREFIX} from '@/config.js'
+import util from '@/util.js'
 import PostContent from '@/components/PostContent.vue'
 import Comment from '@/components/Comment.vue'
-import axios from 'axios'
-import util from '@/util.js'
 
 export default {
   name: 'post',
@@ -35,13 +37,14 @@ export default {
         content: '',
         tags: []
       },
+      errored: false,
       comments: []
     }
   },
   mounted() {
-    const post_number = this.$route.params.post_number || 1 // 1是about页面的ID
-    const url = `https://api.github.com/repos/manxisuo/blog/issues/${post_number}`
-    axios(url).then(r => {
+    const post_number = parseInt(this.$route.params.post_number) || ABOUT_NUMBER
+    const p_url = `${API_PREFIX}/repos/${REPO}/issues/${post_number}`
+    axios(p_url).then(r => {
       const item = r.data
       this.post = {
         id: item.id,
@@ -52,11 +55,12 @@ export default {
         content: item.body,
         tags: item.labels
       }
+    }).catch(e => {
+      this.errored = true
     })
-
     
-    const url2 = `https://api.github.com/repos/manxisuo/blog/issues/${post_number}/comments`
-    axios(url2).then(r => {
+    const c_url = `${API_PREFIX}/repos/${REPO}/issues/${post_number}/comments`
+    axios(c_url).then(r => {
       const item = r.data
       this.comments = r.data.map(item => ({
         id: item.id,
@@ -67,11 +71,10 @@ export default {
         content: item.body,
         url: item.html_url
       }))
-    })    
+    }).catch(e => {})
   }
 }
 </script>
 
 <style scoped>
-
 </style>

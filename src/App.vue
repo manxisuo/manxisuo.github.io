@@ -6,7 +6,7 @@
           <div class="gh-header-wrapper">
             <h2 class="gh-title">
               <img src="avatar.jpg" class="gh-avatar">
-              <router-link to="/">写代码的苏打饼</router-link>
+              <router-link to="/">{{title}}</router-link>
             </h2>
             <div id="nav">
               <router-link to="/">首页</router-link>
@@ -39,11 +39,13 @@
 
 <script>
 import axios from 'axios'
+import {TITLE} from '@/config.js'
 
 export default {
   data () {
     return {
-      kw: ''
+      kw: '',
+      title: TITLE
     }
   },
   computed: {

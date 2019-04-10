@@ -12,9 +12,10 @@
 </template>
 
 <script>
-import PostMeta from '@/components/PostMeta.vue'
 import axios from 'axios'
+import {REPO, API_PREFIX} from '@/config.js'
 import util from '@/util.js'
+import PostMeta from '@/components/PostMeta.vue'
 
 export default {
   components: {
@@ -28,7 +29,7 @@ export default {
     }
   },
   mounted () {
-    const url = 'https://api.github.com/repos/manxisuo/blog/labels'
+    const url = `${API_PREFIX}/repos/${REPO}/labels`
     axios(url).then(r => {
       this.tags = r.data.map(item => ({
         id: item.id,
@@ -41,7 +42,7 @@ export default {
     handleTagClick (tagName) {
       this.curTag = tagName
 
-      const url = `https://api.github.com/repos/manxisuo/blog/issues?labels=${tagName}`
+      const url = `${API_PREFIX}/repos/${REPO}/issues?labels=${tagName}`
       axios(url).then(r => {
         this.posts = r.data.map(item => ({
           id: item.id,
