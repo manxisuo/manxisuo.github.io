@@ -65,7 +65,7 @@ export default {
 }
 
 .gh-tag {
-  margin: 3px 0 3px 3px;
+  margin: 10px 0 10px 10px;
   float: right;
 }
 </style>

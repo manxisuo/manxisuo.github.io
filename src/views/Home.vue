@@ -3,7 +3,7 @@
     <template v-if="posts">
       <template v-if="posts.length > 0">
         <PostMeta v-for="post in posts" :key="post.id" v-bind="post" />
-        <el-pagination
+        <el-pagination v-if="!isSearchMode"
           layout="prev, pager, next" background
           @current-change="changePage"
           :current-page="page" :page-size="pageSize" :total="total"
@@ -27,6 +27,7 @@ export default {
   },
   data () {
     return {
+      isSearchMode: 'false',
       posts: null,
       pageSize: PAGE_SIZE,
       page: 1,
@@ -52,9 +53,11 @@ export default {
 
       const kw = this.$route.query.kw
       if (kw) {
+        this.isSearchMode = true
         this.doSearch(kw, fn)
       }
       else {
+        this.isSearchMode = false
         this.doQueryAll(fn)
       }
     },
@@ -67,7 +70,7 @@ export default {
           page: this.page
         }
       }).then(resp => {
-        this.fetchTotal(resp.headers['link'])
+        //this.fetchTotal(resp.headers['link'])
         fn(resp.data.items)
       })
     },
