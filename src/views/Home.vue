@@ -51,21 +51,21 @@ export default {
         }))
       }
 
-      const kw = this.$route.query.kw
-      if (kw) {
+      const keyword = this.$route.query.keyword
+      if (keyword) {
         this.isSearchMode = true
-        this.doSearch(kw, fn)
+        this.doSearch(keyword, fn)
       }
       else {
         this.isSearchMode = false
         this.doQueryAll(fn)
       }
     },
-    doSearch (kw, fn) {
+    doSearch (keyword, fn) {
       const url = `${API_PREFIX}/search/issues`
       axios.get(url, {
         params: {
-          q: `${kw} user:${AUTHOR} repo:${REPO} author:${AUTHOR} type:issue in:title,body`,
+          q: `${keyword} user:${AUTHOR} repo:${REPO} author:${AUTHOR} type:issue in:title,body`,
           per_page: PAGE_SIZE,
           page: this.page
         }

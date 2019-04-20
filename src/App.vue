@@ -15,7 +15,7 @@
               <router-link to="/about">关于</router-link>
             </div>
             <div class="search-box">
-              <el-input placeholder="搜索文章" v-model="kw" @keyup.enter.native="searchPosts">
+              <el-input placeholder="搜索文章" v-model="keyword" @keyup.enter.native="searchPosts" size="mini">
                 <el-button slot="append" icon="el-icon-search" @click="searchPosts"></el-button>
               </el-input>
             </div>
@@ -44,7 +44,7 @@ import {TITLE} from '@/config.js'
 export default {
   data () {
     return {
-      kw: '',
+      keyword: '',
       title: TITLE
     }
   },
@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     searchPosts () {
-      this.$router.push({path: 'search', query: {kw: this.kw}})
+      this.$router.push({path: 'search', query: {keyword: this.keyword}})
     }
   }
 }
