@@ -1,6 +1,11 @@
 ---
-title: ""
+title: "关于"
 draft: false
+menu:
+  main:
+    weight: 90
+    params:
+      icon: user
 ---
 
 - 基本属性：

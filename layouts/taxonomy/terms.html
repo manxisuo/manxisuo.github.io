@@ -1,0 +1,27 @@
+{{ define "main" }}
+    <header>
+        <div class="section-card">
+            <div class="section-details">
+                <h3 class="section-count">{{ len .Data.Terms }} 个标签</h3>
+                <h1 class="section-term">{{ .Title }}</h1>
+            </div>
+        </div>
+    </header>
+
+    <section class="widget tagCloud" style="margin-top: 20px;">
+        <div class="tagCloud-tags">
+            {{ range .Data.Terms.Alphabetical }}
+                <a href="{{ .Page.RelPermalink }}" class="font_size_{{ .Count }}">
+                    {{ .Page.Title }} <span style="color: var(--card-text-color-tertiary); font-size: 0.9em;">({{ .Count }})</span>
+                </a>
+            {{ end }}
+        </div>
+    </section>
+
+    {{ partialCached "footer/footer" . }}
+{{ end }}
+
+{{ define "right-sidebar" }}
+    {{ partial "sidebar/right.html" (dict "Context" . "Scope" "homepage") }}
+{{ end }}
+

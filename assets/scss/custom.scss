@@ -1,0 +1,28 @@
+/* 代码块内边距调整 - Stack 主题 */
+.article-content .highlight {
+    padding: var(--card-padding) !important;
+}
+
+.article-content .highlight pre {
+    padding: 1em !important;
+    margin: 0 !important;
+}
+
+.article-content .highlight pre code {
+    padding: 0 !important;
+}
+
+/* 普通 pre 标签的内边距 */
+.article-content pre:not(.highlight pre) {
+    padding: 1em !important;
+}
+
+/* 代码块内的代码行内边距 */
+.article-content .highlight .chroma {
+    padding: 0 !important;
+}
+
+.article-content .highlight .chroma code {
+    padding: 0 !important;
+}
+

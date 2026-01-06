@@ -1,95 +1,114 @@
 baseURL = "https://manxisuo.github.io/"
 languageCode = "zh-cn"
 title = "Manxisuo的博客"
-theme = "PaperMod"
+theme = "Stack"
+
+# 是否包括中日韩文字
+hasCJKLanguage = true
+
+# 默认内容语言
+DefaultContentLanguage = "zh-cn"
 
 [params]
-  # ============================================================================
-  # 通用配置（多个主题可能支持，但实现方式可能不同）
-  # ============================================================================
+  # 主要内容区域
+  mainSections = ["posts"]
   
-  # 作者信息（很多主题都支持，但结构可能不同）
-  # PaperMod 主题期望 author 是字符串或字符串数组，不是对象
-  author = "Manxisuo"
-  
-  # SEO: 网站描述（很多主题都支持，但用途可能不同）
+  # SEO: 网站描述
   description = "Manxisuo的技术博客 - 记录技术学习、生活感悟和思考"
   
-  # SEO: 关键词（很多主题都支持）
+  # SEO: 关键词
   keywords = ["技术博客", "编程", "JavaScript", "Python", "C++", "学习笔记"]
   
-  # ============================================================================
-  # PaperMod 主题特定配置
-  # 注意：以下配置仅在 PaperMod 主题中生效，切换主题时需要重新配置
-  # ============================================================================
+  # RSS 全文内容
+  rssFullContent = true
   
-  # [PaperMod] 显示文章阅读时间
-  ShowReadingTime = true
-  
-  # [PaperMod] 显示代码块复制按钮
-  ShowCodeCopyButtons = true
-  
-  # [PaperMod] 显示文章分享按钮
-  ShowShareButtons = true
-  
-  # [PaperMod] 禁用首页第一篇文章的特殊样式
-  disableSpecial1stPost = true
-  
-  # [PaperMod] 封面图片配置
-  [params.cover]
-    responsiveImages = true
-    linkFullImages = false
-  
-  # [PaperMod] 首页欢迎信息模式
-  [params.homeInfoParams]
-    Title = "欢迎来到我的博客"
-    Content = """
-    这里记录着我的技术学习、生活感悟和思考。
-    
-    欢迎探索我的文章，希望你能找到感兴趣的内容。
-    """
-    AlignSocialIconsTo = "left"
-  
-  # [PaperMod] 社交图标配置
-  [[params.socialIcons]]
-    name = "GitHub"
-    url = "https://github.com/manxisuo"
-  
-  [[params.socialIcons]]
-    name = "知乎"
-    url = "https://www.zhihu.com/people/suyun"
-  
-  # [PaperMod] 页脚配置
+  # 页脚配置
   [params.footer]
-    hideCopyright = false
-    text = ""
+    since = 2010
+    customText = ""
   
-  # [PaperMod] Schema.org 结构化数据配置
-  [params.schema]
-    publisherType = "Person"
-    sameAs = ["https://github.com/manxisuo", "https://www.zhihu.com/people/suyun"]
+  # 日期格式
+  [params.dateFormat]
+    published = "2006-01-02"
+    lastUpdated = "2006-01-02 15:04 MST"
+  
+  # 侧边栏配置
+  [params.sidebar]
+    emoji = "📝"
+    subtitle = "这里记录着我的技术学习、生活感悟和思考。欢迎探索我的文章，希望你能找到感兴趣的内容。"
+    [params.sidebar.avatar]
+      enabled = false
+      local = true
+      src = ""
+  
+  # 文章配置
+  [params.article]
+    math = false
+    toc = true
+    readingTime = true
+    [params.article.license]
+      enabled = true
+      default = "Licensed under CC BY-NC-SA 4.0"
+  
+  # 评论配置（默认禁用）
+  [params.comments]
+    enabled = false
+  
+  # 颜色方案
+  [params.colorScheme]
+    toggle = true
+    default = "auto"
 
 [outputs]
   home = ["HTML", "RSS", "JSON"]
 
 [menu]
+  # 主导航菜单
   [[menu.main]]
+    identifier = "posts"
     name = "博文"
     url = "/posts/"
     weight = 10
+    [menu.main.params]
+      icon = "home"
+  
   [[menu.main]]
+    identifier = "tags"
     name = "标签"
     url = "/tags/"
     weight = 20
-  [[menu.main]]
-    name = "归档"
-    url = "/archives/"
+    [menu.main.params]
+      icon = "tag"
+  
+  # 社交链接菜单
+  [[menu.social]]
+    identifier = "github"
+    name = "GitHub"
+    url = "https://github.com/manxisuo"
+    weight = 10
+    [menu.social.params]
+      icon = "brand-github"
+  
+  [[menu.social]]
+    identifier = "zhihu"
+    name = "知乎"
+    url = "https://www.zhihu.com/people/suyun"
+    weight = 20
+    [menu.social.params]
+      icon = "brand-zhihu"
+  
+  [[menu.social]]
+    identifier = "segmentfault"
+    name = "SegmentFault"
+    url = "https://segmentfault.com/u/manxisuo"
     weight = 30
-  [[menu.main]]
-    name = "搜索"
-    url = "/search/"
+    [menu.social.params]
+      icon = "brand-segmentfault"
+  
+  [[menu.social]]
+    identifier = "email"
+    name = "Email"
+    url = "mailto:manxisuo@gmail.com"
     weight = 40
-  [[menu.main]]
-    name = "关于"
-    url = "/about/"
-    weight = 50
+    [menu.social.params]
+      icon = "brand-email"
