@@ -30,7 +30,7 @@ TODO
 
 执行`su -`，然后执行`visudo`，在打开的文件最后加入新行：
 
-```
+```text
 admin ALL=(ALL) ALL
 ```
 

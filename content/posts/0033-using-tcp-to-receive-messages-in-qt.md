@@ -34,7 +34,7 @@ connect(socket, SIGNAL(readyRead()), this, SLOT(slotReadData()));
 
 测试发现，如果服务端一次发送的报文长度很长（例如10086字节），会被分割成多个包发送。下面是通过tcpdump命令抓包得到的：
 
-```
+```text
 14:47:27.438893 IP ...... length 1448
 14:47:27.438916 IP ...... length 1448
 14:47:27.438920 IP ...... length 1448

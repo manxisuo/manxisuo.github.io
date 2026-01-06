@@ -95,6 +95,7 @@ Child thread
 
 void pthread_exit(void *value_ptr);
 ```
+
 `value_ptr`和线程的返回值的用法一样，其他线程可以调用`pthread_join`获得这个指针。
 
 需要注意，`pthread_exit`或者`return`返回的指针所指向的内存单元必须是全局的或者是用`malloc`分配的，不能在线程函数的栈上分配，因为当其他线程得到这个返回指针时线程函数已经退出了。

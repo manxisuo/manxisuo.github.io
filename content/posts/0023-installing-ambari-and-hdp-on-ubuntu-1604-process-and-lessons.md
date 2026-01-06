@@ -35,7 +35,7 @@ sudo hostname cloud
 
 在/etc/hosts中，增加：
 
-```
+```text
 127.0.1.1	cloud
 ```
 
@@ -49,7 +49,7 @@ sudo hostname cloud
 
 执行`su -`，然后执行`visudo`，在打开的文件最后加入新行：
 
-```
+```text
 su ALL=(ALL) NOPASSWD: ALL
 ```
 
@@ -59,7 +59,7 @@ su ALL=(ALL) NOPASSWD: ALL
 
 ### (1) 添加Ambari源：
 
-```
+```shell
 wget -O /etc/apt/sources.list.d/ambari.list http://public-repo-1.hortonworks.com/ambari/ubuntu16/2.x/updates/2.6.1.5/ambari.list
 apt-key adv --recv-keys --keyserver keyserver.ubuntu.com B9733A7A07513CAD
 apt-get update

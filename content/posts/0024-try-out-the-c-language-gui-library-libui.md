@@ -30,7 +30,7 @@ $ make examples       # for examples
 
 执行cmake时报错，相关信息如下：
 
-```
+```text
 -- No package 'gtk+-3.0' found
 CMake Error at /usr/share/cmake-3.5/Modules/FindPkgConfig.cmake:367 (message):
 A required package was not found
@@ -47,7 +47,7 @@ sudo apt-get install libgtk-3-dev
 
 编译完成后，生成的共享库位于`build/out`目录。
 
-```
+```text
 libui.so
 libui.so.0
 ```

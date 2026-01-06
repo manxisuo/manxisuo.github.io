@@ -106,7 +106,7 @@ gcc -fPIC -shared -I/usr/local/jdk1.7.0_01/include -I/usr/local/jdk1.7.0_01/incl
 
 结果如下：
 
-```
+```text
 The result is 10
 ```
 

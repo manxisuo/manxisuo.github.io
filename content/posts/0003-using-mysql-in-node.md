@@ -16,7 +16,7 @@ tags:
 
 在终端执行：
 
-```
+```shell
 npm install mysql
 ```
 
