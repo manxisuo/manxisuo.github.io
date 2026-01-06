@@ -1,0 +1,31 @@
+/* 覆盖首页欢迎信息的最小高度，使其更紧凑 */
+.home-info.first-entry {
+    min-height: auto !important;
+    padding: var(--gap);
+    background: var(--entry);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    margin: 0 0 var(--gap) 0;
+    display: block;
+}
+
+/* 调整欢迎信息的标题样式 */
+.home-info .entry-header h1 {
+    font-size: 28px;
+    line-height: 1.4;
+    margin-bottom: 0.5em;
+}
+
+/* 调整欢迎信息的内容间距 */
+.home-info .entry-content {
+    margin: 0.5em 0;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+/* 调整欢迎信息的页脚间距 */
+.home-info .entry-footer {
+    margin-top: 1em;
+    padding-top: 0.5em;
+}
+

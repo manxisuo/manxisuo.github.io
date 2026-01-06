@@ -4,8 +4,70 @@ title = "Manxisuo的博客"
 theme = "PaperMod"
 
 [params]
+  # ============================================================================
+  # PaperMod 主题特定配置
+  # 注意：以下配置仅在 PaperMod 主题中生效，切换主题时需要重新配置
+  # ============================================================================
+  
+  # [PaperMod] 显示文章阅读时间
   ShowReadingTime = true
+  
+  # [PaperMod] 显示代码块复制按钮
   ShowCodeCopyButtons = true
+  
+  # [PaperMod] 显示文章分享按钮
+  ShowShareButtons = true
+  
+  # [PaperMod] 禁用首页第一篇文章的特殊样式
+  disableSpecial1stPost = true
+  
+  # [PaperMod] 封面图片配置
+  [params.cover]
+    responsiveImages = true
+    linkFullImages = false
+  
+  # [PaperMod] 首页欢迎信息模式
+  [params.homeInfoParams]
+    Title = "欢迎来到我的博客"
+    Content = """
+    这里记录着我的技术学习、生活感悟和思考。
+    
+    欢迎探索我的文章，希望你能找到感兴趣的内容。
+    """
+    AlignSocialIconsTo = "left"
+  
+  # [PaperMod] 社交图标配置
+  [[params.socialIcons]]
+    name = "GitHub"
+    url = "https://github.com/manxisuo"
+  
+  [[params.socialIcons]]
+    name = "知乎"
+    url = "https://www.zhihu.com/people/suyun"
+  
+  # [PaperMod] 页脚配置
+  [params.footer]
+    hideCopyright = false
+    text = ""
+  
+  # [PaperMod] Schema.org 结构化数据配置
+  [params.schema]
+    publisherType = "Person"
+    sameAs = ["https://github.com/manxisuo", "https://www.zhihu.com/people/suyun"]
+  
+  # ============================================================================
+  # 通用配置（多个主题可能支持，但实现方式可能不同）
+  # ============================================================================
+  
+  # SEO: 网站描述（很多主题都支持，但用途可能不同）
+  description = "Manxisuo的技术博客 - 记录技术学习、生活感悟和思考"
+  
+  # SEO: 关键词（很多主题都支持）
+  keywords = ["技术博客", "编程", "JavaScript", "Python", "C++", "学习笔记"]
+  
+  # 作者信息（很多主题都支持，但结构可能不同）
+  [params.author]
+    name = "Manxisuo"
 
 [outputs]
   home = ["HTML", "RSS", "JSON"]
@@ -20,6 +82,14 @@ theme = "PaperMod"
     url = "/tags/"
     weight = 20
   [[menu.main]]
+    name = "归档"
+    url = "/archives/"
+    weight = 30
+  [[menu.main]]
+    name = "搜索"
+    url = "/search/"
+    weight = 40
+  [[menu.main]]
     name = "关于"
     url = "/about/"
-    weight = 30
+    weight = 50
