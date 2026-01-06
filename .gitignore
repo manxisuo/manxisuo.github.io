@@ -1,0 +1,46 @@
+# =========================
+# Hugo build output
+# =========================
+public/
+resources/_gen/
+.hugo_build.lock
+
+# =========================
+# Hugo modules & caches
+# =========================
+.hugo_cache/
+.hugo_modules/
+
+# =========================
+# OS / Editor junk
+# =========================
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# Vim
+*.swp
+*.swo
+
+# JetBrains IDEs
+.idea/
+
+# =========================
+# Node / frontend (if ever used)
+# =========================
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# Temporary files
+# =========================
+tmp/
+temp/
