@@ -12,7 +12,7 @@ tags:
 
 <!-- more -->
 
-![media-20130323](https://cloud.githubusercontent.com/assets/3950285/22852380/0278eb22-f076-11e6-8f5f-37836a589f91.jpg)
+![media-20130323](https://github-production-user-asset-6210df.s3.amazonaws.com/3950285/533386797-752ccec2-701e-40b6-9317-20cebadee990.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20260108%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260108T141712Z&X-Amz-Expires=300&X-Amz-Signature=31de9e7a7a16027de95143d047ffebd7a3bd42b81dc428d4643a7183407fbfc7&X-Amz-SignedHeaders=host)
 
 # 操作说明
 

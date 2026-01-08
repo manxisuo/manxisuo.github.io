@@ -22,6 +22,9 @@ DefaultContentLanguage = "zh-cn"
   # RSS 全文内容
   rssFullContent = true
   
+  # Favicon 配置（将 favicon 文件放在 static/ 目录下，路径必须以 / 开头）
+  favicon = "/favicon.svg"
+  
   # 页脚配置
   [params.footer]
     since = 2010
