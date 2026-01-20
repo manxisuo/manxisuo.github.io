@@ -26,3 +26,115 @@
     padding: 0 !important;
 }
 
+/* ============================================
+   克制的色彩点缀 - 小面积、低饱和度
+   ============================================ */
+
+:root {
+    /* 温和的蓝色作为强调色 */
+    --accent-blue: #4a90e2;
+    --accent-blue-light: #6ba3e8;
+    --accent-blue-dark: #3a7bc8;
+    
+    /* 温和的绿色作为辅助色 */
+    --accent-green: #52c41a;
+    --accent-green-light: #73d13d;
+    
+    /* 温和的橙色作为点缀色 */
+    --accent-orange: #fa8c16;
+    --accent-orange-light: #ffa940;
+}
+
+/* 链接颜色 - 使用温和的蓝色 */
+.article-content a {
+    color: var(--accent-blue);
+    transition: color 0.2s ease;
+}
+
+.article-content a:hover {
+    color: var(--accent-blue-dark);
+}
+
+/* 文章卡片左侧边框 - 小面积色彩点缀 */
+.article-list article {
+    border-left: 3px solid transparent;
+    transition: border-left-color 0.3s ease;
+}
+
+.article-list article:hover {
+    border-left-color: var(--accent-blue);
+}
+
+/* 文章标题 hover 效果 - 轻微色彩 */
+.article-title a:hover {
+    color: var(--accent-blue) !important;
+    transition: color 0.2s ease;
+}
+
+/* 标签颜色 - 使用更温和的配色 */
+.widget.tagCloud .tagCloud-tags a {
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.widget.tagCloud .tagCloud-tags a:hover {
+    background-color: var(--accent-blue) !important;
+    color: white !important;
+}
+
+/* 导航菜单激活状态 - 小面积色彩 */
+.menu .menu-item.active a,
+.menu .menu-item a:hover {
+    color: var(--accent-blue);
+}
+
+/* 引用块左侧边框 - 温和的绿色 */
+.article-content blockquote {
+    border-left-color: var(--accent-green) !important;
+    background-color: rgba(82, 196, 26, 0.05) !important;
+}
+
+/* 代码块边框 - 轻微色彩 */
+.article-content .highlight {
+    border-left: 3px solid var(--accent-blue);
+}
+
+/* 按钮和交互元素 - 温和的蓝色 */
+button,
+.button {
+    background-color: var(--accent-blue);
+    color: white;
+    transition: background-color 0.2s ease;
+}
+
+button:hover,
+.button:hover {
+    background-color: var(--accent-blue-dark);
+}
+
+/* 侧边栏小装饰 */
+.widget-title::before {
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 1em;
+    background-color: var(--accent-blue);
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+/* 深色模式下的色彩调整 */
+[data-scheme="dark"] {
+    --accent-blue: #5ba0f0;
+    --accent-blue-light: #7bb3f5;
+    --accent-blue-dark: #4a90e2;
+    
+    --accent-green: #73d13d;
+    --accent-green-light: #95de64;
+    
+    --accent-orange: #ffa940;
+    --accent-orange-light: #ffc069;
+}
+
+[data-scheme="dark"] .article-content blockquote {
+    background-color: rgba(82, 196, 26, 0.1) !important;
+}
