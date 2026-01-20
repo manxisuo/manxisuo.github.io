@@ -53,9 +53,29 @@ DefaultContentLanguage = "zh-cn"
       enabled = true
       default = "Licensed under CC BY-NC-SA 4.0"
   
-  # 评论配置（默认禁用）
+  # 评论配置
   [params.comments]
-    enabled = false
+    enabled = true
+    provider = "giscus"
+    
+    # Giscus 配置（基于 GitHub Discussions）
+    # 设置步骤：
+    # 1. 在 GitHub 仓库中启用 Discussions（Settings -> Features -> Discussions）
+    # 2. 访问 https://giscus.app 配置并获取以下参数
+    # 3. 安装 Giscus app 到你的仓库
+    [params.comments.giscus]
+      repo = "manxisuo/manxisuo.github.io"  # 格式：用户名/仓库名
+      repoID = "R_kgDOQ0uWTA"  # 从 giscus.app 获取
+      category = "Announcements"  # Discussions 分类名称
+      categoryID = "DIC_kwDOQ0uWTM4C1Myu"  # 从 giscus.app 获取
+      mapping = "pathname"  # 映射方式：pathname, url, title, og:title
+      strict = 0  # 严格模式：0 或 1
+      reactionsEnabled = 1  # 启用反应：0 或 1
+      emitMetadata = 0  # 发出元数据：0 或 1
+      inputPosition = "bottom"  # 输入框位置：top 或 bottom
+      lang = "zh-CN"  # 语言
+      lightTheme = "light"  # 浅色主题
+      darkTheme = "dark_dimmed"  # 深色主题
   
   # 颜色方案
   [params.colorScheme]
