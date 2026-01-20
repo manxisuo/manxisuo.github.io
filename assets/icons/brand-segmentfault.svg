@@ -1,16 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg"
-  class="icon icon-tabler icon-tabler-brand-segmentfault-abstract"
-  width="24" height="24" viewBox="0 0 24 24"
-  stroke="currentColor" fill="none"
-  stroke-width="2"
-  stroke-linecap="round" stroke-linejoin="round">
-
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-
-  <!-- Top segment -->
-  <path d="M5 6h10a2 2 0 0 1 2 2v2h-10a2 2 0 0 0 -2 2z"/>
-
-  <!-- Bottom segment (offset) -->
-  <path d="M9 10h10v6a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"/>
-
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+     viewBox="0 0 24 24" fill="none" stroke="currentColor"
+     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+     aria-label="SegmentFault">
+  <!-- subtle rounded square container, consistent and tidy -->
+  <rect x="4" y="4" width="16" height="16" rx="4"/>
+  <!-- S -->
+  <path d="M15 8.5c0-1.1-1.2-2-3-2s-3 .9-3 2 1.1 1.6 3 2 3 .9 3 2-1.2 2-3 2-3-.9-3-2"/>
+  <!-- F (simple, geometric) -->
+  <path d="M14.8 17.5V12.2"/>
+  <path d="M14.8 12.2h3.2"/>
+  <path d="M14.8 14.6h2.4"/>
 </svg>

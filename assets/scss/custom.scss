@@ -27,6 +27,71 @@
 }
 
 /* ============================================
+   克制的背景设计
+   ============================================ */
+
+/* 方案1: 非常微妙的渐变背景（推荐） */
+/*
+body {
+    background: linear-gradient(180deg, 
+        #f8f9fa 0%, 
+        #f5f5fa 50%, 
+        #f8f9fa 100%
+    ) !important;
+    background-attachment: fixed;
+}
+
+[data-scheme="dark"] body {
+    background: linear-gradient(180deg, 
+        #2a2a2a 0%, 
+        #303030 50%, 
+        #2a2a2a 100%
+    ) !important;
+    background-attachment: fixed;
+}   
+*/
+
+/* 方案2: 微妙的纹理背景（可选，注释掉方案1后启用） */
+
+body {
+    background-color: #f7f8fa !important;
+    background-image: 
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 0, 0, 0.01) 2px,
+            rgba(0, 0, 0, 0.01) 4px
+        ) !important;
+    background-attachment: fixed;
+}
+
+[data-scheme="dark"] body {
+    background-color: #2e2e2e !important;
+    background-image: 
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 2px,
+            rgba(255, 255, 255, 0.01) 2px,
+            rgba(255, 255, 255, 0.01) 4px
+        ) !important;
+    background-attachment: fixed;
+}
+
+
+/* 方案3: 温暖的米白色背景（可选，注释掉方案1后启用） */
+/*
+body {
+    background-color: #faf9f7 !important;
+}
+
+[data-scheme="dark"] body {
+    background-color: #2d2d2d !important;
+}
+*/
+
+/* ============================================
    克制的色彩点缀 - 小面积、低饱和度
    ============================================ */
 
