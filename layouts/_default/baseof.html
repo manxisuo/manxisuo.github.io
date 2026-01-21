@@ -24,10 +24,20 @@
             </svg>
         </button>
         
-        {{- /* 右侧按钮：只在有目录的文章页显示 */ -}}
-        {{- $isArticlePage := eq .Kind "page" -}}
+        {{- /* 右侧按钮：在有右侧边栏内容的页面显示（TOC 或 homepage widgets） */ -}}
+        {{- $showRightToggle := false -}}
+        
+        {{- /* 检查是否有 homepage widgets */ -}}
+        {{- $hasHomepageWidgets := false -}}
+        {{- if .Site.Params.widgets.homepage -}}
+            {{- if gt (len .Site.Params.widgets.homepage) 0 -}}
+                {{- $hasHomepageWidgets = true -}}
+            {{- end -}}
+        {{- end -}}
+        
+        {{- /* 检查文章页是否有 TOC */ -}}
         {{- $hasTOC := false -}}
-        {{- if $isArticlePage -}}
+        {{- if eq .Kind "page" -}}
             {{- $TOCManuallyDisabled := eq .Params.toc false -}}
             {{- $TOCWidgetEnabled := false -}}
             {{- range .Site.Params.widgets.page -}}
@@ -38,7 +48,13 @@
             {{- $TOCEnabled := and (not $TOCManuallyDisabled) $TOCWidgetEnabled -}}
             {{- $hasTOC = and $TOCEnabled (ge (len .TableOfContents) 100) -}}
         {{- end -}}
-        {{- if $hasTOC -}}
+        
+        {{- /* 在首页/列表页显示（如果有 widgets），或在文章页显示（如果有 TOC） */ -}}
+        {{- if or (and (ne .Kind "page") $hasHomepageWidgets) (and (eq .Kind "page") $hasTOC) -}}
+            {{- $showRightToggle = true -}}
+        {{- end -}}
+        
+        {{- if $showRightToggle -}}
         <button class="sidebar-toggle sidebar-toggle-right" type="button" id="toggle-right-sidebar" aria-label="切换右侧边栏" title="收起/展开右侧边栏">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
