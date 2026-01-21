@@ -1,6 +1,6 @@
 /* 代码块内边距调整 - Stack 主题 */
 .article-content .highlight {
-    padding: var(--card-padding) !important;
+    padding: 12px !important; /* 减小 padding，从 30px 改为 12px */
 }
 
 .article-content .highlight pre {
@@ -24,6 +24,11 @@
 
 .article-content .highlight .chroma code {
     padding: 0 !important;
+}
+
+/* 段落间距调整 - 减小上下 margin */
+.article-content > p {
+    margin: 0.8em 0 !important; /* 从默认的 1.5em 减小到 0.8em */
 }
 
 /* ============================================
