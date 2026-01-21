@@ -208,3 +208,124 @@ button:hover,
 [data-scheme="dark"] .article-content blockquote {
     background-color: rgba(82, 196, 26, 0.1) !important;
 }
+
+/* ============================================
+   侧边栏收起/展开功能
+   ============================================ */
+
+/* 侧边栏切换按钮样式 */
+.sidebar-toggle {
+    position: fixed;
+    z-index: 1000;
+    background: var(--card-background);
+    border: 1px solid var(--card-separator-color);
+    border-radius: 4px;
+    padding: 8px;
+    cursor: pointer;
+    box-shadow: var(--shadow-l1);
+    transition: all 0.3s ease;
+    display: none; /* 默认隐藏，只在桌面端显示 */
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+}
+
+/* 只在桌面端显示切换按钮 */
+@media (min-width: 768px) {
+    .sidebar-toggle {
+        display: flex;
+    }
+}
+
+.sidebar-toggle:hover {
+    background: var(--card-separator-color);
+}
+
+.sidebar-toggle svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2;
+    transition: transform 0.3s ease;
+    color: var(--card-text-color-main);
+}
+
+/* 左侧边栏切换按钮 - 调整位置避免遮挡导航栏 */
+.sidebar-toggle-left {
+    left: 10px;
+    top: 10px; /* 放在页面顶部 */
+    transform: none;
+}
+
+/* 当左侧边栏收起时，按钮移到更靠左的位置 */
+body.left-sidebar-collapsed .sidebar-toggle-left {
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* 当左侧边栏收起时，按钮图标旋转180度 */
+body.left-sidebar-collapsed .sidebar-toggle-left svg {
+    transform: rotate(180deg);
+}
+
+/* 右侧边栏切换按钮 */
+.sidebar-toggle-right {
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* 当右侧边栏收起时，按钮图标旋转180度 */
+body.right-sidebar-collapsed .sidebar-toggle-right svg {
+    transform: rotate(180deg);
+}
+
+/* 左侧边栏收起状态 */
+body.left-sidebar-collapsed .left-sidebar {
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: 0 !important;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+body.left-sidebar-collapsed .left-sidebar > * {
+    display: none;
+}
+
+/* 右侧边栏收起状态 */
+body.right-sidebar-collapsed .right-sidebar {
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: 0 !important;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+body.right-sidebar-collapsed .right-sidebar > * {
+    display: none;
+}
+
+/* 响应式：在小屏幕上隐藏切换按钮 */
+@media (max-width: 768px) {
+    .sidebar-toggle {
+        display: none;
+    }
+}
+
+/* 确保主内容区域在侧边栏收起时能够扩展 */
+body.left-sidebar-collapsed .main-container.extended,
+body.left-sidebar-collapsed .main-container.compact {
+    --left-sidebar-max-width: 0;
+}
+
+body.right-sidebar-collapsed .main-container.extended {
+    --right-sidebar-max-width: 0;
+}

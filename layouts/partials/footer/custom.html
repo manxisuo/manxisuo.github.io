@@ -1,0 +1,5 @@
+{{- /* 加载侧边栏切换功能的 JavaScript */ -}}
+{{- with resources.Get "js/sidebar-toggle.js" -}}
+    {{- $script := . | minify | fingerprint -}}
+    <script type="text/javascript" src="{{ $script.RelPermalink }}" defer></script>
+{{- end -}}
