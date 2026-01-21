@@ -1,10 +1,13 @@
 ---
 title: "Bash脚本总结（一）"
-date: 2026-01-20
+date: 2026-01-19
 draft: false
 tags:
   - "Bash"
   - "Shell"
+  - "脚本编程"
+  - "Unix"
+  - "命令行"
 ---
 
 ## 一. 变量与赋值
