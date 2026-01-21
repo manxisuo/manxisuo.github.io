@@ -25,15 +25,15 @@ f1();
 f2();
 ```
 
-# 1. 刚定义完函数Foo时：
+## 1. 刚定义完函数Foo时：
 
 ![closure-1](https://cloud.githubusercontent.com/assets/3950285/22853559/a33f1202-f094-11e6-89ab-27b362d8bcbb.png)
 
-# 2. 所有代码执行完时：
+## 2. 所有代码执行完时：
 
 ![closure-2](https://cloud.githubusercontent.com/assets/3950285/22853561/a9147f6e-f094-11e6-8a93-798234c9e493.png)
 
-# 3. 说明一下：
+## 3. 说明一下：
 
 问题的关键是：
 

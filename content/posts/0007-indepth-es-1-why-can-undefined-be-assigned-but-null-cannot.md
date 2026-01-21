@@ -8,7 +8,7 @@ tags:
   - "前端"
 ---
 
-# 提出问题
+## 提出问题
 
 如下代码：
 
@@ -19,7 +19,7 @@ null = 123; // 报错：Uncaught Reference Error
 
 第一条语句可以执行，尽管赋值并没有成功；第二条语句报错。这是为什么呢？`undefined`和`null`有什么区别？
 
-# 解决问题
+## 解决问题
 
 读过ES规范后，发现原来是这样的：
 
@@ -27,7 +27,7 @@ null = 123; // 报错：Uncaught Reference Error
 
 - `null`是一个字面量(literal)，准确地说叫做**Null字面量**。与`true`和`false`类似。它们都属于JavaScript的保留字。换句话说它们都是**值**，与数字值`123`、字符串值`"foobar"`一样，当然不能被赋值了。
 
-# 再多说些
+## 再多说些
 
 1. 既然`undefined`只是一个属性，并不是语言的保留字，那么它是否可以用来作为变量的名字？当然可以，你完全可以自定义一个叫做`undefined`的变量或者函数，但是注意不要把它放到全局作用域。例如：
 
@@ -59,7 +59,7 @@ Object.getOwnPropertyDescriptor(window, 'undefined');
 typeof null; // 输出"object"
 ```
 
-# 参考文档
+## 参考文档
 
 1. [15.1.1.3 undefined][1]
 2. [7.6.1 Reserved Words][2]

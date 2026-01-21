@@ -81,6 +81,13 @@ DefaultContentLanguage = "zh-cn"
   [params.colorScheme]
     toggle = true
     default = "auto"
+  
+  # Widgets 配置（侧边栏组件）
+  [params.widgets]
+    # 文章页面右侧边栏：显示目录
+    page = [
+      { type = "toc" }
+    ]
 
 [outputs]
   home = ["HTML", "RSS", "JSON"]

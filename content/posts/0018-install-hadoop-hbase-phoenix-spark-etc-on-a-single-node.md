@@ -9,9 +9,9 @@ tags:
   - "运维"
 ---
 
-# 1. 准备
+## 1. 准备
 
-## 1.1 下载安装包
+### 1.1 下载安装包
 
 - Hadoop：[2.7.1](https://archive.apache.org/dist/hadoop/common/hadoop-2.7.1/hadoop-2.7.1.tar.gz)
 - HBase：[1.1.2](https://archive.apache.org/dist/hbase/1.1.2/hbase-1.1.2-bin.tar.gz)
@@ -21,7 +21,7 @@ tags:
 
 将大数据相关安装包解压在~/bd目录下，JDK解压在/usr/local目录下。
 
-## 1.2 设置环境变量
+### 1.2 设置环境变量
 
 在.bashrc中设置：
 
@@ -30,11 +30,11 @@ export JAVA_HOME=/usr/local/jdk1.7.0_01
 export PATH=$JAVA_HOME/bin:$PATH
 ```
 
-## 1.3 设置域名
+### 1.3 设置域名
 
 在/etc/hosts中增加master域名
 
-## 1.4 设置SSH免密登录
+### 1.4 设置SSH免密登录
 
 过程参考[这里](http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/SingleCluster.html#Setup_passphraseless_ssh)。
 
@@ -44,7 +44,7 @@ export PATH=$JAVA_HOME/bin:$PATH
 sudo cp id_rsa.pub /root/.ssh
 ```
 
-# 2. 部署Hadoop
+## 2. 部署Hadoop
 
 为了方便使用，在.bashrc中设置：
 
@@ -53,7 +53,7 @@ export HADOOP_HOME=~/bd/hadoop-2.7.1
 export PATH=$HADOOP_HOME/bin:$PATH
 ```
 
-## 2.1 配置JAVA路径
+### 2.1 配置JAVA路径
 在etc/hadoop/hadoop-env.sh中设置：
 
 ```sh
@@ -62,7 +62,7 @@ export JAVA_HOME=/usr/local/jdk1.7.0_01
 
 注：如果设置了JAVA_HOME变量，这一步不是必须的。
 
-## 2.2 配置HDFS
+### 2.2 配置HDFS
 
 在etc/hadoop/core-site.xml中增加：
 
@@ -97,7 +97,7 @@ export JAVA_HOME=/usr/local/jdk1.7.0_01
 bin/hdfs namenode -format
 ```
 
-## 2.3 配置Yarn
+### 2.3 配置Yarn
 
 如果使用MapReduce，则进行以下配置。
 
@@ -119,9 +119,9 @@ bin/hdfs namenode -format
 </property>
 ```
 
-## 2.4 启动Hadoop
+### 2.4 启动Hadoop
 
-### (1) 启动NameNode和DataNode守护进程：
+#### (1) 启动NameNode和DataNode守护进程：
 
 ```sh
 sbin/start-dfs.sh
@@ -129,7 +129,7 @@ sbin/start-dfs.sh
 
 NameNode的Web UI是<http://localhost:50070>
 
-### (2) 启动ResourceManager和NodeManager守护进程：
+#### (2) 启动ResourceManager和NodeManager守护进程：
 
 ```sh
 sbin/start-yarn.sh
@@ -137,7 +137,7 @@ sbin/start-yarn.sh
 
 ResourceManager的Web UI是<http://localhost:8088>
 
-# 3. 部署HBase
+## 3. 部署HBase
 
 为了方便使用，在.bashrc中设置：
 
@@ -146,7 +146,7 @@ export HBASE_HOME=~/bd/hbase-1.1.2
 export PATH=$HBASE_HOME/bin:$PATH
 ```
 
-## 3.1 配置JAVA路径
+### 3.1 配置JAVA路径
 在conf/hbase-env.sh中设置：
 
 ```sh
@@ -155,7 +155,7 @@ export JAVA_HOME=/usr/local/jdk1.7.0_01
 
 注：如果设置了JAVA_HOME变量，这一步不是必须的。
 
-## 3.2 设置hbase和zookeeper数据的存储位置
+### 3.2 设置hbase和zookeeper数据的存储位置
 
 在conf/hbase-site.xml中：
 
@@ -188,7 +188,7 @@ export JAVA_HOME=/usr/local/jdk1.7.0_01
 </property>
 ```
 
-## 3.3 启动HBase
+### 3.3 启动HBase
 
 ```sh
 bin/start-hbase.sh
@@ -196,7 +196,7 @@ bin/start-hbase.sh
 
 启动后jps能看到HMaster。
 
-# 4. 部署Phoenix
+## 4. 部署Phoenix
 
 为了方便使用，在.bashrc中设置：
 
@@ -223,7 +223,7 @@ sqlline.py master
 
 查看是否正常进入。
 
-# 5. 部署Spark
+## 5. 部署Spark
 
 为了方便使用，在.bashrc中设置：
 
@@ -232,9 +232,9 @@ export SPARK_HOME=~/bd/spark-1.6.1-bin-without-hadoop
 export PATH=$SPARK_HOME/bin:$PATH
 ```
 
-## 5.1 Standalone模式
+### 5.1 Standalone模式
 
-### (1) 告诉Spark使用哪个Hadoop
+#### (1) 告诉Spark使用哪个Hadoop
 
 Spark会使用Hadoop client库，用来访问HDFS和YARN。我下载的是即不带Hadoop的版本，好处是比较灵活，可以自己选择连接哪一个版本的Hadoop。但是要在环境变量中配置路径，即在conf/spark-env.sh中增加：
 
@@ -242,7 +242,7 @@ Spark会使用Hadoop client库，用来访问HDFS和YARN。我下载的是即不
 export SPARK_DIST_CLASSPATH=$(hadoop classpath)
 ```
 
-### (2) 手动启动Spark集群 TODO
+#### (2) 手动启动Spark集群 TODO
 
 ```sh
 sbin/start-master.sh -h 192.168.229.128
@@ -256,11 +256,11 @@ sbin/start-slave.sh spark://192.168.229.128:7077
 bin/spark-shell --master spark://192.168.229.128:7077
 ```
 
-## 5.2 Yarn模式
+### 5.2 Yarn模式
 
 Yarn模式下，不需要手动启动Spark。由Yarn来调用。
 
-# 6. 部署Hive
+## 6. 部署Hive
 
 TODO TODO
 
@@ -269,13 +269,13 @@ export HIVE_HOME=~/bd/apache-hive-1.2.2-bin
 export PATH=$HIVE_HOME/bin:$PATH
 ```
 
-## 6.1 TODO
+### 6.1 TODO
 
-## 6.2 TODOd
+### 6.2 TODOd
 
-## 6.3 TODO
+### 6.3 TODO
 
-## 6.4 在Spark中使用HiveContext
+### 6.4 在Spark中使用HiveContext
 
 ```python
 from pyspark import SparkConf, SparkContext
@@ -286,4 +286,4 @@ sc = SparkContext(conf = conf)
 sqlContext = HiveContext(sc)
 ```
 
-# To Be Continued...
+## To Be Continued...

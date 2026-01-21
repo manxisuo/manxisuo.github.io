@@ -8,11 +8,11 @@ tags:
   - "前端"
 ---
 
-# 一. 创建正则表达式
+## 一. 创建正则表达式
 
 创建正则表达式有两种方式：
 
-## 1. 字面量形式
+### 1. 字面量形式
 
 ```javascript
 /pattern/flags
@@ -24,7 +24,7 @@ tags:
 var re = /^(0|([1-9][0-9]*))$/; // 自然数
 ```
 
-## 2. 使用构造函数
+### 2. 使用构造函数
 
 ```javascript
 new RegExp(/pattern/flags)
@@ -36,15 +36,15 @@ new RegExp(/pattern/flags)
 var re = new RegExp(/ab/i); // ab, aB, Ab, AB
 ```
 
-## 3. 修饰符
+### 3. 修饰符
 
 - **i**：执行对大小写不敏感的匹配。
 - **g**：执行全局匹配（查找所有匹配而非在找到第一个匹配后停止）。
 - **m**：执行多行匹配。
 
-# 二. 正则表达式的方法
+## 二. 正则表达式的方法
 
-## 1. RegExp.prototype.test()
+### 1. RegExp.prototype.test()
 
 `test()`方法执行一个检索，用来查看正则表达式与指定的字符串是否匹配。返回`true`或`false`。
 
@@ -54,7 +54,7 @@ var re = new RegExp(/ab/i); // ab, aB, Ab, AB
 /.?onkey/.test('It is a monkey!'); // true
 ```
 
-## 2. RegExp.prototype.exec()
+### 2. RegExp.prototype.exec()
 
 `exec()`方法为指定的一段字符串执行搜索匹配操作。它的返回值是一个数组或者`null`。
 
@@ -64,7 +64,7 @@ var re = new RegExp(/ab/i); // ab, aB, Ab, AB
 /.?onkey/.exec('It is a monkey!'); // ["monkey"]
 ```
 
-## 3. **g模式**下的test()和exec()方法
+### 3. **g模式**下的test()和exec()方法
 
 当正则表达式带有g修饰符时，内部会维护一个位置指针。开始时位置指针指向字符串的起始位置。
 
@@ -88,7 +88,7 @@ re.test(str); // false
 // ...
 ```
 
-## 4. 存在分组时的exec()方法
+### 4. 存在分组时的exec()方法
 
 在正则表达式中，用小括号包裹起来的部分叫做**分组**。
 
@@ -103,9 +103,9 @@ var html = '<div><a name="github" href="https://github.com">GitHub官网</a></di
 linkRe.exec(html); // ["<a name="github" href="https://github.com">", "github", "https://github.com"]
 ```
 
-# 三. 字符串中与正则表达式相关的方法
+## 三. 字符串中与正则表达式相关的方法
 
-## 1. String.prototype.match()
+### 1. String.prototype.match()
 
 `match()`方法会提取与指定的正则表达式匹配的子串。
 
@@ -131,7 +131,7 @@ str.match(re2); // ["a1b", "a2b", "a3b"]
 
 从上例中也可以看出：当正则表达式不带g修饰符时，将返回第一次匹配到的结果(与`RegExp.exec(str)`得到的结果相同)；当正则表达式带g修饰符时，将返回所有匹配到的结果。如果没有匹配项，则返回`null`。
 
-## 2. String.prototype.split()
+### 2. String.prototype.split()
 
 `split()`方法通过把字符串分割成子字符串来把一个String对象分割成一个字符串数组。
 
@@ -165,7 +165,7 @@ str.split([separator][, limit])
 'A123B345C567D'.split(/\d(\d)\d/) // ["A", "2", "B", "4", "C", "6", "D"]
 ```
 
-## 3. String.prototype.search()
+### 3. String.prototype.search()
 
 `search()`方法执行一个查找，看该字符串对象与一个正则表达式是否匹配。
 
@@ -190,7 +190,7 @@ str.search(regexp)
 'Java and JavaScript'.search('Python'); // -1
 ```
 
-## 4. String.prototype.replace()
+### 4. String.prototype.replace()
 
 `replace()`方法使用一个替换值（replacement）替换掉一个匹配模式（pattern）在原字符串中某些或所有的匹配项，并返回替换后的新的字符串。这个替换模式可以是一个字符串或者一个`RegExp`，替换值可以是一个字符串或者一个函数。
 

@@ -16,16 +16,16 @@ tags:
 
 <!-- more -->
 
-# 说明
+## 说明
 
 + 记录网站的用户名和密码，下次登录时不用再重新输入。
 + 记录表单中的数据，以后可以瞬间填充。
 
-# 截图
+## 截图
 
 ![input-recorder](https://cloud.githubusercontent.com/assets/3950285/22852644/33e5a0ce-f07b-11e6-9561-aafb9d67046e.png)
 
-# 链接
+## 链接
 
 <https://chrome.google.com/webstore/detail/endkfhomobijnknngmdfcooaafdmfbfj>
 

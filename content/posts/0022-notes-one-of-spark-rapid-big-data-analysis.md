@@ -8,9 +8,9 @@ tags:
   - "学习笔记"
 ---
 
-# 2. Spark下载与入门
+## 2. Spark下载与入门
 
-## 2.2 Spark的Shell
+### 2.2 Spark的Shell
 
 两种类型的Shell：
 
@@ -38,12 +38,12 @@ sudo apt-get install ipython-notebook
 IPYTHON_OPTS="notebook" ./bin/pyspark
 ```
 
-## 2.3 Spark核心概念简介
+### 2.3 Spark核心概念简介
 
 - 驱动器（SparkContext）
 - 执行器
 
-## 2.4 独立应用
+### 2.4 独立应用
 
 创建SparkContext：
 
@@ -63,11 +63,11 @@ bin/spark-submit my_script.py
 PYSPARK_PYTHON=`which python3` spark-submit my_script.py
 ```
 
-# 3. RDD编程
+## 3. RDD编程
 
 RDD - 弹性分布式数据集。是一个不可变的分布式对象集合。
 
-## 3.2 创建RDD
+### 3.2 创建RDD
 
 创建RDD的方法：
 
@@ -81,7 +81,7 @@ lines = sc.textFile('README.md')
 nums = sc.parallelize([1, 2, 3, 4])
 ```
 
-## 3.3 RDD操作
+### 3.3 RDD操作
 
 - 转化操作：例如map、filter
 - 行动操作：例如count、take、collect、saveAsTextFile、saveAsSequenceFile
@@ -116,15 +116,15 @@ RDD的转换操作是惰性求值的。
     - `aggregate(zeroValue)(seqOp, combOp)`
     - `foreach(func)`
 
-## 3.6 持久化（缓存）
+### 3.6 持久化（缓存）
 
 `persist(storageLevel=StorageLevel(False, True, False, False, 1))`
 
 默认级别MEMORY_ONLY_SER。等价于`cache()`。
 
-# 4. 键值对操作
+## 4. 键值对操作
 
-## 4.2 创建Pair RDD
+### 4.2 创建Pair RDD
 
 方法有很多，例如用map：
 
@@ -132,7 +132,7 @@ RDD的转换操作是惰性求值的。
 pairs = lines.map(lambda x : (x.split(' ')[0], x))
 ```
 
-## 4.3 Pair RDD的转化操作
+### 4.3 Pair RDD的转化操作
 
 1. Pair RDD的转化操作
     - `reduceByKey(func)`
@@ -151,7 +151,7 @@ pairs = lines.map(lambda x : (x.split(' ')[0], x))
     - `leftOuterJoin`
     - `cogroup`
 
-### 4.3.1 聚合操作
+#### 4.3.1 聚合操作
 
 1. 聚合操作：
 
@@ -163,25 +163,25 @@ pairs = lines.map(lambda x : (x.split(' ')[0], x))
     - `repartition()`
     - `coalesce(numPartitions, shuffle=False)`
 
-### 4.3.2 数据分组
+#### 4.3.2 数据分组
 
 `groupByKey()`
 
 注意：`rdd.reduceByKey(func)`等价于`rdd.groupByKey().mapValues(v => v.reduce(func))`，但前者更高效。
 
-### 4.3.3 连接
+#### 4.3.3 连接
 
-### 4.3.4 数据排序
+#### 4.3.4 数据排序
 
 `sortByKey()`
 
-## 4.4 Pair RDD的行动操作
+### 4.4 Pair RDD的行动操作
 
 - `countByKey()`
 - `collectAsMap()`
 - `lookup(key)`
 
-## 4.5 数据分区（进阶）
+### 4.5 数据分区（进阶）
 
 分区优化：
 
@@ -204,13 +204,13 @@ def partitionBy(partitioner: Partitioner): JavaPairRDD[K, V]
 
 很多操作，都会自动为结果RDD设定已知的分区方式信息。例如`sortByKey()`和`groupByKey()`，分别生成范围分区的RDD和哈希分区的RDD。另一方面，诸如`map()`这样的操作会导致新的RDD失去父RDD的分区信息。
 
-### 4.5.1 获取RDD的分区方式：
+#### 4.5.1 获取RDD的分区方式：
 
 - Java中：`rdd.partitioner()`
 - Scala中：`rdd.partitioner`
 - Python中：无法获取，但是Spark内部仍然会利用已有的分区信息。
 
-### 4.5.3 从分区中获益的操作
+#### 4.5.3 从分区中获益的操作
 
 - `cogroup()`
 - `groupWith()`
@@ -222,7 +222,7 @@ def partitionBy(partitioner: Partitioner): JavaPairRDD[K, V]
 - `combineByKey()`
 - `lookup()`
 
-### 4.5.4 影响分区方式的操作
+#### 4.5.4 影响分区方式的操作
 
 所有会为结果RDD设好分区方式的操作：
 
@@ -241,7 +241,7 @@ def partitionBy(partitioner: Partitioner): JavaPairRDD[K, V]
 
 注意：在无需改变元素的键时，尽量使用`mapValues()`或`flatMapValues()`。
 
-### 4.5.5 自定义分区方式
+#### 4.5.5 自定义分区方式
 
 - 在Java和Scala中，扩展`Partitioner`类
 - 在Python中，只需要把一个特定的哈希函数作为一个额外的参数传给`RDD.partitionBy()`函数。例如：

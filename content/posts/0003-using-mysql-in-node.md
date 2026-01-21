@@ -12,7 +12,7 @@ tags:
 
 <!-- more -->
 
-# 1. 安装
+## 1. 安装
 
 在终端执行：
 
@@ -20,7 +20,7 @@ tags:
 npm install mysql
 ```
 
-# 2. 简单的查询
+## 2. 简单的查询
 
 ```javascript
 var mysql = require('mysql');

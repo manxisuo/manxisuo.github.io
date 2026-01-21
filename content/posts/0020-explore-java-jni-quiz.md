@@ -8,7 +8,7 @@ tags:
   - "编程语言"
 ---
 
-# 1. Java代码
+## 1. Java代码
 
 ```java
 package com.github.manxisuo;
@@ -32,7 +32,7 @@ public class TestJNI
 }
 ```
 
-# 2. 生成头文件
+## 2. 生成头文件
 
 ```shell
 javah -jni com.github.manxisuo.TestJNI
@@ -73,7 +73,7 @@ JNIEXPORT void JNICALL Java_com_github_manxisuo_TestJNI_set
 
 ```
 
-# 3. C/C++代码
+## 3. C/C++代码
 
 TestJNI.cpp文件：
 
@@ -94,7 +94,7 @@ JNIEXPORT void JNICALL Java_com_github_manxisuo_TestJNI_set (JNIEnv *, jclass, j
 }
 ```
 
-# 3. 编译成动态链接库
+## 4. 编译成动态链接库
 
 ```shell
 gcc -fPIC -shared -I/usr/local/jdk1.7.0_01/include -I/usr/local/jdk1.7.0_01/include/linux libHello.cpp -o libHello.so
@@ -102,7 +102,7 @@ gcc -fPIC -shared -I/usr/local/jdk1.7.0_01/include -I/usr/local/jdk1.7.0_01/incl
 
 注意：在linux下，在查找库文件时，会在库名称前加上`lib`前缀。因此，库名称为`Hello`时，库文件的名称应该是`libHello`。
 
-# 4. 运行Java代码
+## 5. 运行Java代码
 
 结果如下：
 

@@ -17,10 +17,10 @@ tags:
 ![便笺](https://cloud.githubusercontent.com/assets/3950285/22852505/871b78de-f078-11e6-8017-784b0f12e16a.png)
 
 
-# 演示地址：
+## 演示地址：
 
 [点击打开](http://manxisuo.github.io/notepaper/)
 
-# 注意事项：
+## 注意事项：
 
 所有内容是保存在本地的，如果清理了网站在本地的数据(例如在chrome中选择 **删除 Cookie 以及其他网站数据和插件数据** )，则**数据将全部丢失**。
