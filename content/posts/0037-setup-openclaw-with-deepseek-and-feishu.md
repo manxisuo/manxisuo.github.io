@@ -1,16 +1,18 @@
 ---
-title: "在Windows 11上用DeepSeek驱动OpenClaw，并接入飞书"
+title: "在Windows 11上安装OpenClaw，并接入飞书"
 date: 2026-02-16
 draft: false
 tags: 
   - "OpenClaw"
   - "DeepSeek"
+  - "智谱AI"
+  - "GLM-4V"
   - "飞书"
   - "AI Agent"
   - "Windows"
 ---
 
-最近在折腾 [OpenClaw](https://openclaw.ai/) —— 一个开源的 AI Agent 框架。它可以用浏览器聊天，也可以对接各种 IM 平台。我的需求很简单：**用 DeepSeek 的 API 作为大脑，让它在飞书里直接回复消息。**
+最近在折腾 [OpenClaw](https://openclaw.ai/) —— 一个开源的 AI Agent 框架。它可以用浏览器聊天，也可以对接各种 IM 平台。我的需求很简单：**用大模型 API 作为大脑，让它在飞书里直接回复消息。**
 
 整个过程踩了不少坑，尤其是配置文件的字段名和模型注册方式，官方文档里没完全覆盖到。这篇文章把完整流程记录下来，希望能帮到有同样需求的朋友。
 
@@ -20,6 +22,7 @@ tags:
 - Node.js v20+
 - OpenClaw 2026.2.14
 - DeepSeek API（V3 / R1）
+- 智谱 AI GLM-4.6V（视觉推理模型）
 - 飞书个人版
 
 ## 第一步：安装 OpenClaw
@@ -143,7 +146,72 @@ openclaw
 
 重启 OpenClaw，在 http://127.0.0.1:18789/chat 发条消息试试。看到 DeepSeek 正常回复就说明模型配通了 🎉
 
-## 第三步：接入飞书
+## 第三步：配置智谱 GLM-4.6V（视觉推理模型）
+
+DeepSeek 搞定之后，我又想加一个支持图片理解的模型。正好在 [智谱 AI 开放平台](https://open.bigmodel.cn/) 买了 GLM-4.6V 的视觉推理包 —— 1000 万 tokens，支持 128K 上下文，还能识别图片，非常适合在飞书里发图让 AI 分析。
+
+好消息是，智谱 AI 的 API 也兼容 OpenAI 格式，配置方式跟 DeepSeek 几乎一样。
+
+### 获取 API Key
+
+去 [智谱 AI 开放平台](https://open.bigmodel.cn/usercenter/apikeys) 创建 API Key（格式：`xxxxxxxx.xxxxxxxx`）。
+
+### 注册智谱 Provider
+
+在 `openclaw.json` 的 `models.providers` 里，紧跟 `deepseek` 后面加入：
+
+```json
+"zhipu": {
+  "baseUrl": "https://open.bigmodel.cn/api/paas/v4/",
+  "api": "openai-completions",
+  "models": [
+    {
+      "id": "glm-4.6v",
+      "name": "GLM-4.6V (视觉推理)",
+      "reasoning": false,
+      "input": ["text", "image"],
+      "contextWindow": 131072,
+      "maxTokens": 4096
+    }
+  ]
+}
+```
+
+注意 `input` 里包含了 `"image"`，这表示该模型支持多模态图片输入。
+
+### 配置 API Key
+
+在 `auth-profiles.json` 的 `profiles` 里加一条：
+
+```json
+"zhipu": {
+  "type": "api_key",
+  "provider": "zhipu",
+  "key": "你的智谱API Key"
+}
+```
+
+### 切换主模型
+
+如果想把 GLM-4.6V 设为默认模型，修改 `openclaw.json`：
+
+```json
+"agents": {
+  "defaults": {
+    "model": {
+      "primary": "zhipu/glm-4.6v"
+    }
+  }
+}
+```
+
+也可以保持 DeepSeek 为主模型，两个 provider 共存，随时切换。
+
+### 验证
+
+重启 OpenClaw，在飞书里发一张图片给机器人，看它能不能正确描述图片内容。我测试的时候，发了一张截图让它分析，GLM-4.6V 准确识别了图中的内容 —— 多模态能力确认可用 ✅
+
+## 第四步：接入飞书
 
 现在本地聊天没问题了，下一步是让 OpenClaw 在飞书里当机器人。
 
@@ -252,6 +320,18 @@ openclaw pairing approve feishu <配对码>
 
 审批通过后，就可以在飞书里愉快地跟 OpenClaw 对话了！
 
+## 模型对比
+
+配完之后，手上就有了三个可用的模型：
+
+| 模型 | Provider 名 | 特点 | 适用场景 |
+|------|-------------|------|----------|
+| DeepSeek V3 | `deepseek/deepseek-chat` | 便宜、快、64K 上下文 | 日常文本对话 |
+| DeepSeek R1 | `deepseek/deepseek-reasoner` | 深度推理 | 复杂逻辑问题 |
+| GLM-4.6V | `zhipu/glm-4.6v` | 视觉多模态、128K 上下文 | 图片分析、Coding |
+
+切换主模型只需改 `openclaw.json` 的 `"primary"` 字段，重启即可。
+
 ## 踩坑总结
 
 | 坑 | 现象 | 解法 |
@@ -275,8 +355,9 @@ openclaw pairing approve feishu <配对码>
 - [OpenClaw 官网](https://openclaw.ai/) / [GitHub](https://github.com/openclaw/openclaw)
 - [OpenClaw 飞书频道文档](https://docs.openclaw.ai/channels/feishu)
 - [DeepSeek 开放平台](https://platform.deepseek.com/)
+- [智谱 AI 开放平台](https://open.bigmodel.cn/)
 - [飞书开放平台](https://open.feishu.cn/app)
 
 ---
 
-折腾了一下午，总算跑通了。DeepSeek V3 的响应速度和质量都不错，搭配飞书用起来比浏览器还方便 —— 毕竟飞书本来就一直开着。如果你也在找一个能自己掌控的 AI Agent 方案，OpenClaw + DeepSeek + 飞书是一个很不错的组合。
+折腾了一下午，总算跑通了。DeepSeek V3 的响应速度和质量都不错，搭配飞书用起来比浏览器还方便 —— 毕竟飞书本来就一直开着。后来又加了智谱 GLM-4.6V，在飞书里直接发图片就能让 AI 分析内容，多模态体验很顺滑。如果你也在找一个能自己掌控的 AI Agent 方案，OpenClaw + 国产大模型 + 飞书是一个很不错的组合。
