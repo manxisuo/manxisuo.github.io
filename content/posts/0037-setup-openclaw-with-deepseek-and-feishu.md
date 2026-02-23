@@ -16,6 +16,25 @@ tags:
 
 整个过程踩了不少坑，尤其是配置文件的字段名和模型注册方式，官方文档里没完全覆盖到。这篇文章把完整流程记录下来，希望能帮到有同样需求的朋友。
 
+## 一图看懂：OpenClaw / Provider / Channel
+
+先用 30 秒把关键概念对齐（这能省掉后面一半的“我到底在配什么”）：
+
+- **OpenClaw**：Agent 运行时（负责消息路由、工具调用、会话管理、日志、插件等）
+- **Provider**：一个大模型 API 入口（DeepSeek / 智谱 / 你自建的 OpenAI 兼容服务都算）
+- **Model**：Provider 下的具体模型 ID（例如 `deepseek-chat`、`glm-4.6v`）
+- **Channel**：消息接入（例如飞书）。Channel 把外部消息转成 OpenClaw 内部消息，再由 Agent 调模型回复
+
+这篇文章最终跑通的链路就是：
+
+```text
+飞书(发消息/发图)
+   ↓  (WebSocket 长连接)
+OpenClaw (Agent Runtime)
+   ↓  (OpenAI 兼容接口)
+DeepSeek / 智谱 GLM API
+```
+
 ## 环境
 
 - Windows 11
@@ -55,10 +74,13 @@ openclaw
 
 ### 为什么不用 Ollama？
 
-我一开始试过在 WSL2 里跑 Ollama + Qwen2.5:7b，但遇到了两个问题：
+我一开始试过在 WSL2 里跑 Ollama + Qwen2.5:7b，但很快发现：**聊天 demo 可以，本地 Agent 运行时场景会更“挑剔”**。主要原因是 Agent 的系统提示词更长、会话更复杂、还会频繁调用工具。
+
+遇到的典型问题包括：
 
 1. **上下文窗口太小**：OpenClaw 要求至少 16000 tokens，而 Ollama 默认只给 4096。即使在 OpenClaw 配置里改了 `contextWindow`，Ollama 那边还是会截断 prompt。
 2. **需要自建 Modelfile**：要在 Ollama 侧用 `num_ctx` 参数创建自定义模型才能真正扩大上下文。
+3. **并发与稳定性**：IM 场景（群聊 @、多会话）很容易出现并发请求，本地模型一旦显存/内存吃紧，体验会从“慢”变成“卡住/超时”。在 Windows + WSL2 组合下，排查链路也更长。
 
 折腾了一圈，我决定直接用 DeepSeek 的云端 API —— 省事、便宜、上下文窗口 64K。
 
@@ -324,11 +346,11 @@ openclaw pairing approve feishu <配对码>
 
 配完之后，手上就有了三个可用的模型：
 
-| 模型 | Provider 名 | 特点 | 适用场景 |
-|------|-------------|------|----------|
-| DeepSeek V3 | `deepseek/deepseek-chat` | 便宜、快、64K 上下文 | 日常文本对话 |
-| DeepSeek R1 | `deepseek/deepseek-reasoner` | 深度推理 | 复杂逻辑问题 |
-| GLM-4.6V | `zhipu/glm-4.6v` | 视觉多模态、128K 上下文 | 图片分析、Coding |
+| 模型 | Provider 名 | 特点 | 适用场景 | 价格/计费参考 |
+|------|-------------|------|----------|--------------|
+| DeepSeek V3 | `deepseek/deepseek-chat` | 便宜、快、64K 上下文 | 日常文本对话 | 以 DeepSeek 平台计费为准；也可在 OpenClaw `models.providers.deepseek.models[].cost` 中记录参考值 |
+| DeepSeek R1 | `deepseek/deepseek-reasoner` | 深度推理 | 复杂逻辑问题 | 以 DeepSeek 平台计费为准；也可在 OpenClaw `models.providers.deepseek.models[].cost` 中记录参考值 |
+| GLM-4.6V | `zhipu/glm-4.6v` | 视觉多模态、128K 上下文 | 图片分析、Coding | 以智谱平台计费为准（视觉模型通常按输入/输出分别计费） |
 
 切换主模型只需改 `openclaw.json` 的 `"primary"` 字段，重启即可。
 
