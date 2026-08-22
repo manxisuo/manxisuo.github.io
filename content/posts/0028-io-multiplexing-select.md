@@ -14,97 +14,103 @@ tags:
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
+#include <arpa/inet.h>
 #include <netinet/in.h>
-#include <sys/socket.h>
 #include <sys/select.h>
-#include <set>
+#include <sys/socket.h>
 
-#define BUF_SIZE 1024
-#define SERVER_PORT 10001
+constexpr int SERVER_PORT = 10001;
+constexpr int BUF_SIZE = 1024;
 
-int main(int argc, char *argv[])
+int main()
 {
-    char buf[BUF_SIZE];  // 缓冲区
-
-    // 新建Socket
-    // AF_INET：IP协议族
+    // 1. 创建监听 socket
     int listenFd = socket(AF_INET, SOCK_STREAM, 0);
+    if (listenFd < 0) {
+        perror("socket");
+        return 1;
+    }
 
-    // 设置服务器地址
-    struct sockaddr_in serverAddr;
-    memset(&serverAddr, 0, sizeof(serverAddr));
+    // 2. 绑定地址并开始监听
+    sockaddr_in serverAddr{};
     serverAddr.sin_family = AF_INET;
     serverAddr.sin_port = htons(SERVER_PORT);
     serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
 
-    // 将Socket绑定到上述地址
-    bind(listenFd, (struct sockaddr*)&serverAddr, sizeof(serverAddr));   
-    listen(listenFd, 100);  // 开始接受连接
+    if (bind(listenFd,
+             reinterpret_cast<sockaddr *>(&serverAddr),
+             sizeof(serverAddr)) < 0) {
+        perror("bind");
+        close(listenFd);
+        return 1;
+    }
 
-    // 用于保存客户端连接生成的Socket的fd
-    std::set<int> clientFds;
+    if (listen(listenFd, 10) < 0) {
+        perror("listen");
+        close(listenFd);
+        return 1;
+    }
 
-    int maxFd = listenFd;  // 表示当前所有fd的最大值
+    printf("server is listening on port %d\n", SERVER_PORT);
 
-    fd_set allSet;  // 用于保存当前所有fd
-    FD_ZERO(&allSet);
-    FD_SET(listenFd, &allSet);
+    // masterSet 保存所有需要监听的 fd。
+    // select() 会修改传入的 fd_set，所以每次循环都要复制一份。
+    fd_set masterSet;
+    FD_ZERO(&masterSet);
+    FD_SET(listenFd, &masterSet);
 
-    for (;;)
-    {
-        fd_set readSet = allSet;  // 用来传给内核的fd_set，之所以拷贝一份是因为内核会修改它
-        int nready = select(maxFd + 1, &readSet, NULL, NULL, NULL);
+    int maxFd = listenFd;
+    char buffer[BUF_SIZE];
 
-        // 检查是否有客户端新建连接
-        if (FD_ISSET(listenFd, &readSet))
-        {
-            // 获取客户端连接生成的Socket
-            struct sockaddr_in clientAddr;
-            socklen_t clientLen = sizeof (clientAddr);
-            int connFd = accept(listenFd, (struct sockaddr*)&clientAddr, &clientLen);
+    for (;;) {
+        fd_set readSet = masterSet;
 
-            printf("Socket %d created\n", connFd);
-            fflush(stdout);
-
-            // 将客户端连接生成的Socket的fd保存起来
-            clientFds.insert(connFd);
-
-            // 将客户端连接生成的Socket的fd加入select中
-            FD_SET(connFd, &allSet);
-
-            if (connFd > maxFd) maxFd = connFd;
-
-            nready -= 1;
-            if (nready <= 0) continue;
+        // 阻塞，直到至少有一个 fd 可读
+        int ready = select(maxFd + 1, &readSet, nullptr, nullptr, nullptr);
+        if (ready < 0) {
+            perror("select");
+            break;
         }
 
-        // 检查是否存在客户端Socket有数据需要读
-        for (int sockFd : clientFds)
-        {
-            if (FD_ISSET(sockFd, &readSet))
-            {
-                int n = read(sockFd, buf, BUF_SIZE);
-                if (n == 0)
-                {
-                    close(sockFd);  // 关闭fd
-                    FD_CLR(sockFd, &allSet);
-                    clientFds.erase(sockFd);
-                    printf("Socket %d closed\n", sockFd);
-                    fflush(stdout);
-                }
-                else
-                {
-                    buf[n] = '\0';
-                    write(sockFd, buf, n);
-                    printf("Socket %d said : %s\n", sockFd, buf);
-                    fflush(stdout);
-                }
-                nready -= 1;
-                if (nready <= 0) break;
+        // 监听 fd 可读，表示有新的客户端连接到来
+        if (FD_ISSET(listenFd, &readSet)) {
+            int clientFd = accept(listenFd, nullptr, nullptr);
+            if (clientFd >= 0) {
+                FD_SET(clientFd, &masterSet);
+                if (clientFd > maxFd)
+                    maxFd = clientFd;
+
+                printf("client %d connected\n", clientFd);
             }
+        }
+
+        // 检查已有客户端 fd 是否有数据可读
+        for (int fd = 0; fd <= maxFd; ++fd) {
+            if (fd == listenFd || !FD_ISSET(fd, &readSet))
+                continue;
+
+            int n = read(fd, buffer, sizeof(buffer));
+
+            if (n == 0) {
+                // read 返回 0，表示客户端关闭了连接
+                close(fd);
+                FD_CLR(fd, &masterSet);
+                printf("client %d disconnected\n", fd);
+                continue;
+            }
+
+            if (n < 0)
+                continue;
+
+            // 简单 echo：把收到的数据发回客户端。
+            // 这里按字节数输出，不把网络数据当作 C 字符串。
+            write(fd, buffer, n);
+
+            printf("client %d says: %.*s\n", fd, n, buffer);
         }
     }
 
+    close(listenFd);
     return 0;
 }
 ```
