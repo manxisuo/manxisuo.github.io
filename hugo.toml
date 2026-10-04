@@ -38,7 +38,7 @@ DefaultContentLanguage = "zh-cn"
   # 侧边栏配置
   [params.sidebar]
     emoji = "📝"
-    subtitle = "这里记录着我的技术学习、生活感悟和思考。欢迎探索我的文章，希望你能找到感兴趣的内容。"
+    subtitle = "在复杂世界中，保持探索与思考的耐心。"
     [params.sidebar.avatar]
       enabled = false
       local = true
@@ -97,13 +97,24 @@ DefaultContentLanguage = "zh-cn"
     ]
 
 [outputs]
-  home = ["HTML", "RSS", "JSON"]
+  home = ["HTML", "RSS"]
+
+[pagination]
+  pagerSize = 8
 
 [menu]
+  [[menu.main]]
+    identifier = "home"
+    name = "首页"
+    url = "/"
+    weight = 5
+    [menu.main.params]
+      icon = "home"
+
   # 主导航菜单
   [[menu.main]]
     identifier = "posts"
-    name = "博文"
+    name = "文章"
     url = "/posts/"
     weight = 10
     [menu.main.params]
