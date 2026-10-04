@@ -1,46 +1,36 @@
-// 侧边栏收起/展开功能
-(function() {
+/* Sidebar preferences apply on desktop; mobile navigation stays accessible. */
+(function () {
     'use strict';
-
-    // 左侧边栏切换
-    const leftSidebarToggle = document.getElementById('toggle-left-sidebar');
-    const leftSidebar = document.querySelector('.left-sidebar');
-    
-    // 右侧边栏切换
-    const rightSidebarToggle = document.getElementById('toggle-right-sidebar');
-    const rightSidebar = document.querySelector('.right-sidebar');
-
-    // 从 localStorage 读取状态
-    const leftSidebarCollapsed = localStorage.getItem('leftSidebarCollapsed') === 'true';
-    const rightSidebarCollapsed = localStorage.getItem('rightSidebarCollapsed') === 'true';
-
-    // 初始化状态
-    if (leftSidebarCollapsed && leftSidebar) {
-        document.body.classList.add('left-sidebar-collapsed');
+    function readPreference(key) {
+        try { return localStorage.getItem(key) === 'true'; } catch (_) { return false; }
     }
-    if (rightSidebarCollapsed && rightSidebar) {
-        document.body.classList.add('right-sidebar-collapsed');
+    function writePreference(key, value) {
+        try { localStorage.setItem(key, String(value)); } catch (_) { /* Private browsing. */ }
     }
-
-    // 左侧边栏切换
-    if (leftSidebarToggle && leftSidebar) {
-        leftSidebarToggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            const isCollapsed = document.body.classList.toggle('left-sidebar-collapsed');
-            localStorage.setItem('leftSidebarCollapsed', isCollapsed.toString());
+    ['left', 'right'].forEach(function (side) {
+        const button = document.getElementById('toggle-' + side + '-sidebar');
+        const sidebar = document.querySelector('.' + side + '-sidebar');
+        if (!button || !sidebar) return;
+        const key = side + 'SidebarCollapsed';
+        const className = side + '-sidebar-collapsed';
+        function sync(collapsed) {
+            document.body.classList.toggle(className, collapsed);
+            button.setAttribute('aria-expanded', String(!collapsed));
+        }
+        sync(readPreference(key));
+        button.addEventListener('click', function () {
+            const collapsed = !document.body.classList.contains(className);
+            sync(collapsed);
+            writePreference(key, collapsed);
         });
-    }
-
-    // 右侧边栏切换
-    if (rightSidebarToggle && rightSidebar) {
-        rightSidebarToggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            const isCollapsed = document.body.classList.toggle('right-sidebar-collapsed');
-            localStorage.setItem('rightSidebarCollapsed', isCollapsed.toString());
+    });
+    const themeToggle = document.getElementById('dark-mode-toggle');
+    if (themeToggle) {
+        themeToggle.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                themeToggle.click();
+            }
         });
     }
 })();

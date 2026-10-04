@@ -5,6 +5,7 @@
         {{- block "head" . -}}{{ end }}
     </head>
     <body class="{{ block `body-class` . }}{{ end }}">
+        <a class="skip-link" href="#main-content">跳到主要内容</a>
         {{- partial "head/colorScheme" . -}}
 
         {{/* The container is wider when there's any activated widget */}}
@@ -17,7 +18,7 @@
         
         {{- /* 侧边栏切换按钮 - 放在容器外部，确保始终可见 */ -}}
         {{- /* 左侧按钮：调整位置避免遮挡导航栏 */ -}}
-        <button class="sidebar-toggle sidebar-toggle-left" type="button" id="toggle-left-sidebar" aria-label="切换左侧边栏" title="收起/展开左侧边栏">
+        <button class="sidebar-toggle sidebar-toggle-left" type="button" id="toggle-left-sidebar" aria-controls="left-sidebar" aria-expanded="true" aria-label="切换左侧边栏" title="收起/展开左侧边栏">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                 <polyline points="15 6 9 12 15 18" />
@@ -54,8 +55,8 @@
             {{- $showRightToggle = true -}}
         {{- end -}}
         
-        {{- if $showRightToggle -}}
-        <button class="sidebar-toggle sidebar-toggle-right" type="button" id="toggle-right-sidebar" aria-label="切换右侧边栏" title="收起/展开右侧边栏">
+        {{- if and $showRightToggle (not .IsHome) -}}
+        <button class="sidebar-toggle sidebar-toggle-right" type="button" id="toggle-right-sidebar" aria-controls="right-sidebar" aria-expanded="true" aria-label="切换右侧边栏" title="收起/展开右侧边栏">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                 <polyline points="9 6 15 12 9 18" />
@@ -68,7 +69,7 @@
                 {{ partial "sidebar/left.html" . }}
             {{- end -}}
             {{- block "right-sidebar" . -}}{{ end }}
-            <main class="main full-width">
+            <main id="main-content" class="main full-width">
                 {{- block "main" . }}{{- end }}
             </main>
         </div>

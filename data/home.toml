@@ -1,0 +1,34 @@
+eyebrow = "MANXISUO · DIGITAL GARDEN"
+title = "保持好奇，"
+titleAccent = "持续求索。"
+description = "一个软件工程师的长期知识工作台。在这里，记录技术背后的原理、实践中的思考，以及生活里的微小发现。"
+note = "路漫漫其修远兮，吾将上下而求索。"
+
+[[topics]]
+  title = "系统与工程"
+  description = "从底层机制，到真实世界的工程实践。"
+  tag = "系统编程"
+  symbol = "01"
+[[topics]]
+  title = "语言与工具"
+  description = "拆解语言设计，探索工具的可能性。"
+  tag = "JavaScript"
+  symbol = "02"
+[[topics]]
+  title = "生活与思考"
+  description = "在代码之外，留一点观察世界的时间。"
+  tag = "生活"
+  symbol = "03"
+
+[[featured]]
+  path = "/posts/0030-io-multiplexing-epoll"
+  label = "理解底层"
+  description = "沿着 select、poll 到 epoll，理解 Linux 如何应对大量并发连接。"
+[[featured]]
+  path = "/posts/0034-qts-event-loop-and-signalsslots"
+  label = "工程笔记"
+  description = "梳理事件循环与信号槽之间的关系，理解 Qt 应用的运行机制。"
+[[featured]]
+  path = "/posts/0011-diagramming-javascript-closures"
+  label = "图解原理"
+  description = "用图示拆开闭包，理解作用域、变量与函数之间的联系。"
