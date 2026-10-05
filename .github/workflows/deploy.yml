@@ -34,6 +34,13 @@ jobs:
           hugo-version: "0.146.0"
           extended: true
 
+      - name: Sync curated project metadata
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          python3 -m unittest discover -s tests
+          python3 scripts/sync_projects.py
+
       - name: Build
         env:
           HUGO_ENVIRONMENT: production

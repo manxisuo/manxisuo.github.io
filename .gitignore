@@ -44,3 +44,7 @@ yarn-error.log*
 # =========================
 tmp/
 temp/
+
+# Python project-metadata scripts
+__pycache__/
+*.py[cod]

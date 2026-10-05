@@ -1,0 +1,82 @@
+# 展示名单与叙述由这里维护；GitHub 元数据在构建时同步。
+[[items]]
+id = "slate"
+repo = "manxisuo/slate"
+name = "Slate"
+order = 10
+featured = true
+category = "工作流工具"
+stage = "持续探索"
+tagline = "给正在做的事情，一个持久的空间。"
+description = "把同一任务中的文字、代码、命令与草图，放进可自由布局的桌面工作台。减少工具之间的切换，让工作中间态有处安放。"
+highlights = ["围绕任务上下文组织异构信息", "自由布局的工作空间", "SQLite 本地持久化"]
+stack = ["Tauri 2", "Vue 3", "CodeMirror 6", "SQLite"]
+
+[[items]]
+id = "mincode"
+repo = "manxisuo/mincode"
+name = "MinCode"
+order = 20
+featured = true
+category = "AI 与开发"
+stage = "实验平台"
+tagline = "让 Code Agent 的运行过程看得见。"
+description = "一个面向学习、实验与研究的轻量级 Code Agent Runtime。从模型请求到上下文、工具和权限，用可观测的过程理解 Agent 如何工作。"
+highlights = ["Inspector、Timeline 与结构化 Trace", "工作区与工具权限控制", "模型、上下文策略与实验对比"]
+stack = ["Go", "Vue 3", "TypeScript", "JSONL"]
+
+[[items]]
+id = "chatilus"
+repo = "manxisuo/chatilus"
+name = "Chatilus"
+order = 30
+featured = true
+category = "AI 与开发"
+stage = "早期内测"
+tagline = "让 AI 对话历史重新成为日常工具。"
+description = "本地优先的多源 AI 对话历史浏览器。将 ChatGPT、Cursor 和 Gemini 等来源的历史汇入本机，统一浏览、搜索和回顾图片。"
+highlights = ["多源对话导入与统一浏览", "SQLite FTS5 全文搜索", "图片回顾、收藏与 Markdown 导出"]
+stack = ["Tauri 2", "Rust", "Vue 3", "SQLite FTS5"]
+action_label = "下载内测版"
+action_url = "https://github.com/manxisuo/chatilus/releases"
+
+[[items]]
+id = "launch-tab-local"
+repo = "manxisuo/launch-tab-local"
+name = "LaunchTab Local"
+order = 40
+featured = false
+category = "工作流工具"
+stage = "MVP"
+tagline = "从浏览器新标签页，抵达本地工作流。"
+description = "以 Chrome / Edge 新标签页为入口，用统一卡片管理网页、应用协议与受控的本地动作，把常用入口集中到一个地方。"
+highlights = ["网页与本地动作统一管理", "Go Native Host 与动作白名单", "本地优先，无账号与遥测"]
+stack = ["Manifest V3", "Vue 3", "TypeScript", "Go"]
+
+[[items]]
+id = "local-visual-generator"
+repo = "manxisuo/local-visual-generator"
+name = "Local Visual Generator"
+order = 50
+featured = false
+category = "创意实验"
+stage = "实验工具"
+tagline = "在普通笔记本上，快速生成小小的想象。"
+description = "CPU 优先的本地视觉生成器，使用少步扩散与 INT8 模型，探索低细节插画、图标概念和风景的快速生成。模型下载后可离线运行。"
+highlights = ["LCM 少步扩散与 OpenVINO 推理", "无需独立显卡的 CPU 路线", "插画、图标与风景风格预设"]
+stack = ["Python", "OpenVINO GenAI", "LCM", "INT8"]
+
+[[items]]
+id = "orbloom"
+repo = "manxisuo/orbloom"
+name = "Orbloom"
+order = 60
+featured = false
+category = "创意实验"
+stage = "MVP"
+tagline = "转动昼夜，照料属于你的微小世界。"
+description = "一颗可以旋转的低多边形星球。通过分配光照、播种、引入动物和降雨，观察微型生态的生长与变化，让代码成为可互动的世界。"
+highlights = ["可旋转星球与昼夜分界", "植物、气候与动物行为模拟", "IndexedDB 自动与手动存档"]
+stack = ["Three.js", "Vue 3", "TypeScript", "IndexedDB"]
+action_label = "体验小星球"
+action_url = "https://orbloom.vercel.app"

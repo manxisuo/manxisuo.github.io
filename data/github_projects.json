@@ -1,0 +1,62 @@
+{
+  "manxisuo/slate": {
+    "repo": "manxisuo/slate",
+    "description": "A persistent scratch workspace for everything you're working on right now.。承载你「正在做的事情」的持久化数字工作台。",
+    "language": "TypeScript",
+    "stars": 0,
+    "html_url": "https://github.com/manxisuo/slate",
+    "homepage": "",
+    "pushed_at": "2026-09-26T15:25:56Z",
+    "default_branch": "master"
+  },
+  "manxisuo/mincode": {
+    "repo": "manxisuo/mincode",
+    "description": "一个面向学习、实验和研究的轻量级 Code Agent Runtime",
+    "language": "Go",
+    "stars": 0,
+    "html_url": "https://github.com/manxisuo/mincode",
+    "homepage": "",
+    "pushed_at": "2026-09-29T17:01:23Z",
+    "default_branch": "master"
+  },
+  "manxisuo/chatilus": {
+    "repo": "manxisuo/chatilus",
+    "html_url": "https://github.com/manxisuo/chatilus",
+    "description": "Browse Your AI History.",
+    "language": "Rust",
+    "homepage": "",
+    "pushed_at": "2026-09-22T16:45:31Z",
+    "default_branch": "main",
+    "stars": 0
+  },
+  "manxisuo/launch-tab-local": {
+    "repo": "manxisuo/launch-tab-local",
+    "html_url": "https://github.com/manxisuo/launch-tab-local",
+    "description": "Local-first new tab launcher for web and trusted local actions.",
+    "language": "Go",
+    "homepage": "",
+    "pushed_at": "2026-09-10T12:48:50Z",
+    "default_branch": "master",
+    "stars": 0
+  },
+  "manxisuo/local-visual-generator": {
+    "repo": "manxisuo/local-visual-generator",
+    "html_url": "https://github.com/manxisuo/local-visual-generator",
+    "description": "一个CPU优先的本地视觉生成器，专为快速生成低细节图像而优化。",
+    "language": "Python",
+    "homepage": "",
+    "pushed_at": "2026-09-29T03:13:42Z",
+    "default_branch": "master",
+    "stars": 0
+  },
+  "manxisuo/orbloom": {
+    "repo": "manxisuo/orbloom",
+    "html_url": "https://github.com/manxisuo/orbloom",
+    "description": "转动昼夜，照料属于你的微小世界。",
+    "language": "TypeScript",
+    "homepage": "https://orbloom.vercel.app",
+    "pushed_at": "2026-09-25T09:50:04Z",
+    "default_branch": "main",
+    "stars": 0
+  }
+}

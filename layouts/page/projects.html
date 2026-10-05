@@ -1,0 +1,16 @@
+{{ define "body-class" }}garden-projects{{ end }}
+{{ define "main" }}
+{{ $projects := sort .Site.Data.projects.items "order" }}
+<header class="projects-intro">
+    <p class="eyebrow"><span class="status-dot"></span>IDEAS INTO THINGS</p>
+    <h1>把想法，<span>做成作品。</span></h1>
+    <p class="projects-description">从真实需求出发，探索更顺手的工作流、更透明的 AI，以及可以互动的微小世界。这里是我选择留下的几次实践。</p>
+    <div class="projects-intro-bottom"><span><strong>{{ len $projects }}</strong> 个项目 · 持续探索中</span><a class="text-link" href="https://github.com/manxisuo" target="_blank" rel="noopener noreferrer">GitHub 上的更多探索 <span aria-hidden="true">↗</span></a></div>
+</header>
+<section class="project-grid" aria-label="项目作品集">
+    {{ range $projects }}{{ partial "projects/card.html" (dict "project" . "site" $.Site "compact" false) }}{{ end }}
+</section>
+<aside class="projects-closing"><span aria-hidden="true">✳</span><p>有些作品解决问题，有些作品带来新的问题。它们共同记录着我如何学习、构建与探索。</p></aside>
+{{ partial "footer/footer" . }}
+{{ end }}
+{{ define "right-sidebar" }}{{ end }}
