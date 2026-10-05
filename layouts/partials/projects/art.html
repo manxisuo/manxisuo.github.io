@@ -1,0 +1,41 @@
+{{/* Concept illustrations, not screenshots or claims about the application's UI. */}}
+<svg class="project-art" viewBox="0 0 440 190" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <g class="art-lines" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    {{ if eq .id "slate" }}
+        <rect x="90" y="39" width="260" height="136" rx="10" class="art-surface"/><path d="M90 58h260"/>
+        <circle cx="104" cy="49" r="2"/><circle cx="113" cy="49" r="2"/>
+        <rect x="110" y="74" width="98" height="65" rx="5" class="art-soft"/><path d="M122 90h55m-55 10h70m-70 10h39"/>
+        <rect x="225" y="90" width="100" height="66" rx="5" class="art-surface"/><path d="m239 113 9-7-9-7m15 24h26"/>
+        <rect x="247" y="22" width="72" height="53" rx="5" class="art-warm" transform="rotate(8 283 49)"/><path d="m266 43 12 13 24-24"/>
+    {{ else if eq .id "mincode" }}
+        <path d="M103 107h56m45 0h34m-56 0v-40h56m-56 40v41h56" stroke-dasharray="4 5"/>
+        <rect x="71" y="89" width="46" height="36" rx="8" class="art-soft"/><path d="m85 100 9 7-9 7"/>
+        <circle cx="182" cy="107" r="21" class="art-surface"/><path d="m173 107 6 6 12-13"/>
+        <rect x="239" y="45" width="130" height="122" rx="9" class="art-surface"/><path d="M239 68h130m-112 18h65m-65 16h96m-96 16h44"/>
+        <circle cx="254" cy="57" r="3" class="art-warm"/><path d="M258 145h13v-11h14v-13h14v20h14v-8h14v-9h13v21h12"/>
+    {{ else if eq .id "chatilus" }}
+        <rect x="98" y="50" width="232" height="119" rx="10" class="art-soft"/><rect x="112" y="37" width="232" height="119" rx="10" class="art-surface"/>
+        <path d="M174 37v119"/><path d="M125 62h33m-33 18h25m-25 18h30m-30 18h20"/>
+        <rect x="189" y="57" width="94" height="28" rx="7" class="art-soft"/><path d="M201 70h56"/>
+        <rect x="218" y="96" width="111" height="35" rx="7" class="art-warm"/><path d="M232 109h76m-76 10h49"/>
+        <circle cx="329" cy="42" r="19" class="art-surface"/><path d="m343 56 14 14"/><circle cx="329" cy="42" r="9"/>
+    {{ else if eq .id "launch-tab-local" }}
+        <rect x="90" y="35" width="260" height="138" rx="10" class="art-surface"/><path d="M90 58h260"/>
+        <path d="M113 46h49m14 0h31"/><rect x="118" y="75" width="204" height="20" rx="10" class="art-soft"/>
+        <rect x="118" y="111" width="54" height="42" rx="6" class="art-soft"/><rect x="193" y="111" width="54" height="42" rx="6" class="art-warm"/><rect x="268" y="111" width="54" height="42" rx="6" class="art-soft"/>
+        <circle cx="145" cy="132" r="10"/><path d="M135 132h20m-10-10c-7 6-7 14 0 20 7-6 7-14 0-20m64 18v-14l7-4 7 4v14m-19 0h24m58-10 5 5 8-11"/>
+    {{ else if eq .id "local-visual-generator" }}
+        <rect x="108" y="33" width="225" height="138" rx="9" class="art-surface"/><path d="M108 55h225"/>
+        <rect x="125" y="70" width="139" height="83" rx="5" class="art-soft"/><circle cx="238" cy="89" r="10" class="art-warm"/>
+        <path d="m125 145 42-46 31 33 24-24 42 42"/><path d="M280 82h36m-36 18h36m-36 18h36m-36 18h36"/>
+        <circle cx="291" cy="82" r="3" class="art-surface"/><circle cx="306" cy="100" r="3" class="art-surface"/><circle cx="287" cy="118" r="3" class="art-surface"/>
+        <path d="m84 82 8 3 3 8 3-8 8-3-8-3-3-8-3 8Z" class="art-warm"/>
+    {{ else if eq .id "orbloom" }}
+        <circle cx="220" cy="109" r="64" class="art-soft"/><path d="M168 87c19-27 33 17 55-7s50-4 57 18m-115 28c18-18 27-10 39 3s3 21 18 35m18-52c12-12 29 4 33 19"/>
+        <ellipse cx="220" cy="109" rx="107" ry="24" transform="rotate(-16 220 109)"/>
+        <path d="M207 53V33m-15 9 15-21 15 21m-30 10 15-21 15 21M249 67V48m-11 8 11-17 11 17"/>
+        <circle cx="336" cy="48" r="15" class="art-warm"/><path d="M336 24v-5m0 58v-5m-24-24h-5m58 0h-5m-41-17-4-4m42 42-4-4"/>
+        <circle cx="120" cy="57" r="2"/><path d="M299 160h12m-6-6v12"/>
+    {{ end }}
+    </g>
+</svg>

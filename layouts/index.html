@@ -34,6 +34,14 @@
         {{ end }}
     {{ end }}
 </section>
+{{ with .Site.GetPage "/page/projects" }}
+<section class="garden-project-preview" aria-labelledby="home-project-title">
+    <div class="garden-section-heading"><div><p class="eyebrow">BUILT WITH CURIOSITY</p><h2 id="home-project-title">我在构建</h2></div><a class="text-link" href="{{ .RelPermalink }}">全部项目 <span aria-hidden="true">→</span></a></div>
+    <div class="project-preview-grid">
+        {{ range first 3 (sort (where $.Site.Data.projects.items "featured" true) "order") }}{{ partial "projects/card.html" (dict "project" . "site" $.Site "compact" true) }}{{ end }}
+    </div>
+</section>
+{{ end }}
 <section aria-labelledby="featured-title" class="garden-featured">
     <div class="garden-section-heading"><div><p class="eyebrow">A FEW GOOD STARTS</p><h2 id="featured-title">从这里开始</h2></div><span class="section-aside">值得再读的笔记</span></div>
     <div class="featured-grid">

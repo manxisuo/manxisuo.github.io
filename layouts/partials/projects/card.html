@@ -1,0 +1,33 @@
+{{ $p := .project }}
+{{ $metadata := index (.site.Data.github_projects | default dict) $p.repo | default dict }}
+<article class="project-card project-{{ $p.id }}{{ if .compact }} project-card-compact{{ end }}" id="{{ $p.id }}">
+    <div class="project-cover">
+        <span class="project-category">{{ $p.category }}</span>
+        {{ partial "projects/art.html" $p }}
+        <span class="project-stage">{{ $p.stage }}</span>
+    </div>
+    <div class="project-body">
+        <p class="project-repo">{{ $p.repo }}</p>
+        <h2>{{ $p.name }}</h2>
+        <p class="project-tagline">{{ $p.tagline }}</p>
+        <p class="project-description">{{ $p.description }}</p>
+        {{ if not .compact }}<ul class="project-highlights">{{ range $p.highlights }}<li>{{ . }}</li>{{ end }}</ul>{{ end }}
+        <div class="project-stack" aria-label="技术栈">{{ range $p.stack }}<span>{{ . }}</span>{{ end }}</div>
+        {{ if not .compact }}
+        {{ if or $metadata.language $metadata.pushed_at }}
+        <div class="project-metadata">
+            {{ with $metadata.language }}<span><i aria-hidden="true"></i>{{ . }}</span>{{ end }}
+            {{ with $metadata.pushed_at }}<span>仓库更新 <time datetime="{{ . }}">{{ time.Format "2006.01.02" . }}</time></span>{{ end }}
+        </div>
+        {{ end }}
+        {{ end }}
+        <div class="project-actions">
+            <a href="https://github.com/{{ $p.repo }}" target="_blank" rel="noopener noreferrer" aria-label="查看 {{ $p.name }} 源码">{{ partial "helper/icon" "brand-github" }}<span>查看源码</span><span aria-hidden="true">↗</span></a>
+            {{ if .compact }}
+            <a class="project-secondary-action" href="{{ "projects/" | relURL }}#{{ $p.id }}" aria-label="了解 {{ $p.name }}">了解项目 <span aria-hidden="true">→</span></a>
+            {{ else }}
+            {{ with $p.action_url }}<a class="project-secondary-action" href="{{ . }}" target="_blank" rel="noopener noreferrer">{{ $p.action_label }} <span aria-hidden="true">↗</span></a>{{ end }}
+            {{ end }}
+        </div>
+    </div>
+</article>
