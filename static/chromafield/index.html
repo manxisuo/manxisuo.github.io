@@ -2,9 +2,11 @@
 <html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f7f5ec"><title>色间 · Chroma Field</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#f7f5ec;color:#26271f;font-family:"Helvetica Neue",Arial,"PingFang SC",sans-serif}main{max-width:1600px;margin:auto;padding:24px clamp(16px,4vw,76px) 16px}header,footer,.tools,.brand,.caption,.signature{display:flex;align-items:center}header,footer,.caption{justify-content:space-between}header{padding-bottom:18px;border-bottom:1px solid #bdbaae}.brand{gap:12px;font-size:23px;font-weight:700;letter-spacing:-1.2px}.mark{width:25px;height:25px;background:conic-gradient(#f46434 25%,#293e72 0 50%,#e6b93e 0 75%,#253b34 0);border-radius:50%}.tools{gap:6px}button{background:transparent;border:1px solid #c9c6bb;color:inherit;border-radius:40px;font:inherit;font-size:13px;cursor:pointer;padding:9px 15px}button:hover{background:#e4e1d6}button:focus-visible{outline:3px solid #747bac;outline-offset:3px}.hero{display:flex;align-items:baseline;gap:18px;padding:22px 0 18px}h1{font-family:Georgia,"Songti SC",serif;font-size:clamp(32px,4vw,64px);letter-spacing:-.065em;line-height:1.06;font-weight:normal;margin:0}.cn{font-size:16px;letter-spacing:.25em}.art{background:#ded6bd;position:relative;overflow:hidden}canvas{width:100%;height:min(64svh,760px);display:block}.caption{padding:17px 0 21px;border-bottom:1px solid #bdbaae;gap:12px}.signature{gap:12px}.name{font-family:Georgia,serif;font-size:clamp(18px,2vw,30px)}.code{color:#67685e;font:11px monospace;letter-spacing:.1em}.chips{display:flex;gap:4px}.chips i{height:17px;width:17px;border-radius:50%;border:1px solid #0001}footer{padding-top:16px;gap:10px}#next{background:#24271f;border-color:#24271f;color:#fff;padding:10px 20px}#next:hover{background:#43483f}#note{color:#626359;font-size:12px}.toast{position:fixed;bottom:25px;left:50%;transform:translateX(-50%);background:#23271f;color:white;padding:10px 20px;border-radius:30px;font-size:13px}.toast:empty{display:none}@media(max-width:600px){main{padding-top:15px}header{padding-bottom:13px}.hero{padding:18px 0 13px}.brand{font-size:19px}.tools button{font-size:12px;padding:8px 11px}canvas{height:57svh}.signature{gap:5px;align-items:flex-start;flex-direction:column}.chips i{width:14px;height:14px}.caption{padding:12px 0}.cn{font-size:14px}}
+
+canvas{height:auto}.modes,.actions{display:flex;align-items:center;gap:5px}.modes{margin-left:auto}.modes button{border-color:transparent}.modes button[aria-pressed=true]{background:#e6e3d8;border-color:#c8c4b6}.actions button:disabled{opacity:.38;cursor:default}.samples{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:16px}.samples[hidden]{display:none}.samples button{padding:6px;background:#eeece2;border-radius:5px;text-align:left}.samples canvas{width:100%;height:auto;max-height:170px;object-fit:contain}.samples span{display:block;padding:7px 3px 1px}.samples button:hover{background:#dedccc}.hero{flex-wrap:wrap}.actions{flex-wrap:wrap}footer{flex-wrap:wrap}@media(max-width:600px){.modes{flex-basis:100%;margin-left:0}.hero{gap:10px}.modes button{padding:6px 12px}.samples{gap:5px}.samples button{padding:3px}#note{display:none}.actions{width:100%}#next{margin-left:auto}}
 </style>
 <main><header><div class="brand"><i class="mark"></i>Chroma Field</div><div class="tools"><button id="share">复制链接</button><button id="save">保存图片 ↓</button></div></header>
-<div class="hero"><h1>Color Studies</h1><span class="cn">色间</span></div><div class="art"><canvas id="art" aria-label="由不同大小的色面、弧线、条纹拼成的随机几何版画"></canvas></div><div class="caption"><div class="signature"><strong class="name" id="name"></strong><span class="code" id="edition"></span></div><div class="chips" id="chips" aria-label="本幅配色"></div></div><footer><span id="note">空格键 · 切换构图</span><button id="next">换一幅 ↗</button></footer></main><div class="toast" role="status" id="toast"></div>
+<div class="hero"><h1>Color Studies</h1><span class="cn">色间</span><div class="modes" role="group" aria-label="选择画风"><button data-mode="0">色纸拼贴</button><button data-mode="1">潮汐</button><button data-mode="2">静场</button></div></div><div class="art"><canvas id="art" aria-label="由不同大小的色面、弧线、条纹拼成的随机几何版画"></canvas></div><div class="caption"><div class="signature"><strong class="name" id="name"></strong><span class="code" id="edition"></span></div><div class="chips" id="chips" aria-label="本幅配色"></div></div><footer><span id="note">空格键 · 切换构图</span><div class="actions"><button id="undo" disabled>↶ 撤回</button><button id="vary" aria-expanded="false" aria-controls="samples">变奏</button><button id="next">换一幅 ↗</button></div></footer><section class="samples" id="samples" hidden aria-label="选择变奏小样"></section></main><div class="toast" role="status" id="toast"></div>
 <script>
 'use strict';
 const palettes=[
@@ -17,11 +19,9 @@ const palettes=[
 const el=id=>document.getElementById(id), canvas=el('art');
 const randomSeed=()=>crypto.getRandomValues(new Uint32Array(1))[0];
 function rng(seed){return ()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return ((t^t>>>14)>>>0)/4294967296}}
-function readSeed(){let s=location.hash.slice(1).split('-')[0];return /^[0-9a-f]{8}$/i.test(s)?parseInt(s,16):randomSeed()}
-let seed=readSeed(), portrait;
 /* Work in square design units so circles keep their form when exported. */
-function paint(target,w,h){
- const r=rng(seed), colors=palettes[seed%palettes.length].slice(1),ctx=target.getContext('2d');
+function collage(target,w,h,work){
+ const r=rng(work.seed), colors=palettes[work.palette].slice(1),ctx=target.getContext('2d');
  target.width=w;target.height=h;
  const cols=w>=h?10:5,rows=w>=h?5:8,grid=Array.from({length:rows},()=>Array(cols).fill(-1));
  const u=w/cols,v=h/rows;
@@ -38,7 +38,7 @@ function paint(target,w,h){
   for(let j=0;j<b;j++)grid[y+j].fill(bg,x,x+a);
   const X=Math.round(x*u),Y=Math.round(y*v),W=Math.round((x+a)*u)-X,H=Math.round((y+b)*v)-Y;
   ctx.save();ctx.translate(X,Y);ctx.beginPath();ctx.rect(0,0,W,H);ctx.clip();ctx.fillStyle=colors[bg];ctx.fillRect(0,0,W,H);
-  ctx.fillStyle=ctx.strokeStyle=colors[fg];const d=Math.min(W,H), motif=x+y===0?3:Math.floor(r()*10);
+  ctx.fillStyle=ctx.strokeStyle=colors[fg];const d=Math.min(W,H), motif=x+y===0?[3,1,5,4,7,2][work.detail%6]:Math.floor(r()*10);
   if(r()<.5){ctx.translate(W,0);ctx.scale(-1,1)}
   function disk(cx,cy,rad){ctx.beginPath();ctx.arc(cx,cy,rad,0,Math.PI*2);ctx.fill()}
   if(motif===1)disk(W/2,H/2,d*.36);
@@ -54,21 +54,81 @@ function paint(target,w,h){
  for(let i=0;i<data.length;i+=4){const noise=(r()-.5)*12;data[i]+=noise;data[i+1]+=noise;data[i+2]+=noise}
  ctx.putImageData(pixels,0,0);
 }
-function render(){
- const pal=palettes[seed%palettes.length],id=seed.toString(16).padStart(8,'0');
- const format=location.hash.slice(1).split('-')[1];
- portrait=format==='p'||(format!=='l'&&matchMedia('(max-width:600px)').matches);
- // Keep the artwork's design ratio stable across screen and download.
- const w=portrait?900:1800,h=portrait?1160:850;
- canvas.style.height='auto';paint(canvas,w,h);
- el('name').textContent=pal[0];el('edition').textContent='PRINT / '+id.toUpperCase();
- el('chips').replaceChildren(...pal.slice(1).map(c=>{let i=document.createElement('i');i.style.background=c;i.title=c;return i}));
- el('note').textContent=portrait?'轻触「换一幅」探索配色':'空格键 · 切换构图';
+const modes=['色纸拼贴','潮汐','静场'];
+const mobile=()=>matchMedia('(max-width:600px)').matches;
+const fresh=(mode=randomSeed()%3)=>({mode,seed:randomSeed(),palette:randomSeed()%palettes.length,detail:0,format:mobile()?'p':'l'});
+const hex=n=>n.toString(16).padStart(8,'0');
+function encode(w){return ['v2',w.mode,hex(w.seed),w.palette,w.detail,w.format].join('-')}
+function decode(){
+ const hash=location.hash.slice(1);
+ const old=/^([0-9a-f]{8})(?:-([pl]))?$/i.exec(hash);
+ if(old){const seed=parseInt(old[1],16);return {mode:0,seed,palette:seed%palettes.length,detail:0,format:old[2]||(mobile()?'p':'l')}}
+ const m=/^v2-([012])-([0-9a-f]{8})-([0-4])-([0-9]{1,8})-([pl])$/i.exec(hash);
+ return m?{mode:+m[1],seed:parseInt(m[2],16),palette:+m[3],detail:+m[4],format:m[5]}:fresh();
 }
-function next(){seed=randomSeed();history.replaceState(null,'','#'+seed.toString(16).padStart(8,'0'));render()}
-el('next').onclick=next;document.addEventListener('keydown',e=>{if(e.code==='Space'&&!e.repeat&&!e.target.closest('button,input')){e.preventDefault();next()}});
+function circle(ctx,x,y,r,color){ctx.fillStyle=color;ctx.beginPath();ctx.arc(x,y,r,0,2*Math.PI);ctx.fill()}
+function landscape(target,w,h,work){
+ target.width=w;target.height=h;
+ const ctx=target.getContext('2d'),r=rng(work.seed),c=palettes[work.palette].slice(1),d=Math.min(w,h);
+ ctx.fillStyle=c[3];ctx.fillRect(0,0,w,h);
+ const flip=r()<.5;if(flip){ctx.translate(w,0);ctx.scale(-1,1)}
+ if(work.mode===1){
+  const phase=r()*6, drift=.8+r()*1.8, swell=.065+r()*.08;
+  circle(ctx,w*(.18+.36*r()),h*(.22+.08*r()),d*(.085+.055*r()),c[work.detail%2?2:1]);
+  const inks=[4,2,0,4,5,0],bands=[.39,.53,.555,.69,.79,.92];
+  bands.forEach((base,i)=>{
+   ctx.fillStyle=c[inks[i]];ctx.beginPath();
+   for(let k=0;k<=160;k++){
+    const x=k/160, shift=i===2?1:i;
+    const y=h*(base+swell*Math.sin(x*drift*Math.PI+phase+shift*.24)+.04*Math.cos(x*7-phase+shift*.19));
+    if(k===0)ctx.moveTo(0,y);else ctx.lineTo(x*w,y);
+   }
+   ctx.lineTo(w,h);ctx.lineTo(0,h);ctx.closePath();ctx.fill();
+  });
+ }else{
+  const anchor=w*(.24+.22*r()),level=h*(.27+.14*r()),radius=d*(.125+.09*r());
+  const base=h*(.71+.1*r()),span=w*(.32+.33*r());
+  circle(ctx,anchor+(work.detail%5)*w*.025,level,radius,c[1]);
+  ctx.fillStyle=c[0];ctx.fillRect(w*.12,base,span,d*(.008+r()*.02));
+  ctx.fillStyle=c[4];
+  if(r()<.55){ctx.fillRect(w*.12+span,base-d*.12,d*.022,d*.12)}
+  else{ctx.fillRect(w*.12,base+d*.055,span*.4,d*.008)}
+ }
+ const pixels=ctx.getImageData(0,0,w,h),data=pixels.data;
+ for(let i=0;i<data.length;i+=4){const n=(r()-.5)*10;data[i]+=n;data[i+1]+=n;data[i+2]+=n}
+ ctx.putImageData(pixels,0,0);
+}
+function draw(target,w,small=false){
+ const width=w.format==='p'?(small?225:900):(small?360:1800), height=w.format==='p'?(small?290:1160):(small?170:850);
+ (w.mode===0?collage:landscape)(target,width,height,w);
+}
+let work=decode(),trail=[];
+const samples=el('samples'),vary=el('vary');
+function closeSamples(){samples.hidden=true;vary.setAttribute('aria-expanded','false');samples.replaceChildren()}
+function render(){
+ closeSamples();draw(canvas,work);
+ canvas.setAttribute('aria-label',modes[work.mode]+' · '+palettes[work.palette][0]);
+ el('name').textContent=palettes[work.palette][0];
+ el('edition').textContent=modes[work.mode]+' / '+hex(work.seed).toUpperCase();
+ el('chips').replaceChildren(...palettes[work.palette].slice(1).map(c=>{const i=document.createElement('i');i.style.background=c;i.title=c;return i}));
+ document.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.mode===work.mode));
+ el('undo').disabled=!trail.length;
+}
+function apply(w,remember=true){if(remember){trail.push(work);if(trail.length>64)trail.shift()}work=w;history.replaceState(null,'','#'+encode(w));render()}
+function next(){apply(fresh(work.mode))}
+document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{if(+b.dataset.mode!==work.mode)apply({...work,mode:+b.dataset.mode,detail:0})});
+el('next').onclick=next;
+el('undo').onclick=()=>{if(trail.length)apply(trail.pop(),false)};
+vary.onclick=()=>{
+ if(!samples.hidden){closeSamples();return}
+ const options=[{...work,palette:(work.palette+1+randomSeed()%(palettes.length-1))%palettes.length},{...work,seed:(work.seed+1+randomSeed()%0xfffffffe)>>>0,detail:0},{...work,detail:(work.detail+1)%1000000}];
+ options.forEach((option,i)=>{const btn=document.createElement('button'),preview=document.createElement('canvas'),label=document.createElement('span');
+ draw(preview,option,true);label.textContent=['换配色','换构图','微调'][i];btn.append(preview,label);btn.onclick=()=>{apply(option);vary.focus()};samples.append(btn)});
+ samples.hidden=false;vary.setAttribute('aria-expanded','true');samples.scrollIntoView({block:'nearest'});
+};
+document.addEventListener('keydown',e=>{if(e.code==='Space'&&!e.repeat&&!e.target.closest('button,input')){e.preventDefault();next()}});
 let timer;function notify(s){el('toast').textContent=s;clearTimeout(timer);timer=setTimeout(()=>el('toast').textContent='',2200)}
-el('share').onclick=async()=>{const url=new URL(location.href);url.hash=seed.toString(16).padStart(8,'0')+(portrait?'-p':'-l');try{await navigator.clipboard.writeText(url.href);notify('已复制作品链接')}catch{prompt('复制作品链接',url.href)}};
-el('save').onclick=()=>canvas.toBlob(blob=>{if(!blob)return;const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='chromafield-'+seed.toString(16)+'.png';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),3000)},'image/png');
-window.addEventListener('hashchange',()=>{seed=readSeed();render()});matchMedia('(max-width:600px)').addEventListener('change',render);render();
+el('share').onclick=async()=>{const url=new URL(location.href);url.hash=encode(work);try{await navigator.clipboard.writeText(url.href);notify('已复制作品链接')}catch{prompt('复制作品链接',url.href)}};
+el('save').onclick=()=>{const id=encode(work);canvas.toBlob(blob=>{if(!blob)return;const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='chromafield-'+id+'.png';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),3000)},'image/png')};
+window.addEventListener('hashchange',()=>{trail=[];work=decode();render()});render();
 </script></html>
