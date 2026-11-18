@@ -7,7 +7,7 @@ canvas{height:auto}.modes,.actions{display:flex;align-items:center;gap:5px}.mode
 .modes{flex-wrap:wrap}.tools{flex-wrap:wrap}.modes button{white-space:nowrap}.hero{row-gap:10px}dialog{border:1px solid #c9c6bb;background:#f7f5ec;color:inherit;width:min(800px,92vw);max-height:80svh;padding:20px}dialog::backdrop{background:#25251ece}dialog h2{margin:0;font:26px Georgia,serif}#wallHint{font-size:13px;color:#626359}#wallGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(145px,100%),1fr));gap:12px}#wallGrid button{border:0;border-radius:0;padding:0;text-align:left}#wallGrid canvas{width:100%;height:115px;object-fit:contain;background:#e9e6db}#wallGrid span{display:block;padding:6px 0;font-size:12px}@media(max-width:720px){.modes{margin-left:0;width:100%}.tools{justify-content:flex-end}.tools button{padding:7px 9px}.brand{flex-shrink:0}.modes button{padding:5px 9px}.actions button{padding:8px 12px}}@media(max-width:380px){.brand{font-size:15px;gap:4px}.mark{width:16px;height:16px}}
 </style>
 <main><header><div class="brand"><i class="mark"></i>Chroma Field</div><div class="tools"><button id="openWall">收藏墙</button><button id="share">复制链接</button><button id="save">保存图片 ↓</button></div></header>
-<div class="hero"><h1>Color Studies</h1><span class="cn">色间</span><div class="modes" role="group" aria-label="选择画风"><button data-mode="0">色纸拼贴</button><button data-mode="1">潮汐</button><button data-mode="2">静场</button><button data-mode="3">琉璃花窗</button><button data-mode="4">山城街巷</button><button data-mode="5">野花手记</button><button data-mode="6">星轨图谱</button></div></div><div class="art"><canvas id="art" aria-label="由不同大小的色面、弧线、条纹拼成的随机几何版画"></canvas></div><div class="caption"><div class="signature"><strong class="name" id="name"></strong><span class="code" id="edition"></span></div><div class="chips" id="chips" aria-label="本幅配色"></div></div><footer><span id="note">空格键 · 切换构图</span><div class="actions"><button id="favorite">♡ 收藏</button><button id="undo" disabled>↶ 撤回</button><button id="vary" aria-expanded="false" aria-controls="samples">变奏</button><button id="next">换一幅 ↗</button></div></footer><section class="samples" id="samples" hidden aria-label="选择变奏小样"></section></main><dialog id="wall" aria-labelledby="wallTitle"><header><h2 id="wallTitle">收藏墙</h2><button id="closeWall" autofocus>关闭</button></header><p id="wallHint"></p><div id="wallGrid"></div></dialog><div class="toast" role="status" id="toast"></div>
+<div class="hero"><h1>Color Studies</h1><span class="cn">色间</span><div class="modes" role="group" aria-label="选择画风"><button data-mode="0">色纸拼贴</button><button data-mode="1">潮汐</button><button data-mode="2">静场</button><button data-mode="3">琉璃花窗</button><button data-mode="4">山城街巷</button><button data-mode="5">野花手记</button><button data-mode="6">星轨图谱</button></div></div><div class="art"><canvas id="art" aria-label="由不同大小的色面、弧线、条纹拼成的随机几何版画"></canvas></div><div class="caption"><div class="signature"><strong class="name" id="name"></strong><span class="code" id="edition"></span></div><div class="chips" id="chips" aria-label="本幅配色"></div></div><footer><span id="note">空格键 · 切换构图</span><div class="actions"><button id="motion">暂停动态</button><button id="favorite">♡ 收藏</button><button id="undo" disabled>↶ 撤回</button><button id="vary" aria-expanded="false" aria-controls="samples">变奏</button><button id="next">换一幅 ↗</button></div></footer><section class="samples" id="samples" hidden aria-label="选择变奏小样"></section></main><dialog id="wall" aria-labelledby="wallTitle"><header><h2 id="wallTitle">收藏墙</h2><button id="closeWall" autofocus>关闭</button></header><p id="wallHint"></p><div id="wallGrid"></div></dialog><div class="toast" role="status" id="toast"></div>
 <script>
 'use strict';
 const palettes=[
@@ -24,9 +24,11 @@ const el=id=>document.getElementById(id), canvas=el('art');
 const randomSeed=()=>crypto.getRandomValues(new Uint32Array(1))[0];
 function rng(seed){return ()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return ((t^t>>>14)>>>0)/4294967296}}
 /* Work in square design units so circles keep their form when exported. */
-function collage(target,w,h,work){
+function collage(target,w,h,work,time=0){
  const r=rng(work.seed), colors=palettes[work.palette].slice(1),ctx=target.getContext('2d');
- target.width=w;target.height=h;
+ if(target.width!==w)target.width=w;
+ if(target.height!==h)target.height=h;
+ target.getContext('2d').setTransform(1,0,0,1,0,0);
  const cols=w>=h?10:5,rows=w>=h?5:8,grid=Array.from({length:rows},()=>Array(cols).fill(-1));
  const u=w/cols,v=h/rows;
  for(let y=0;y<rows;y++)for(let x=0;x<cols;x++){
@@ -45,15 +47,16 @@ function collage(target,w,h,work){
   ctx.fillStyle=ctx.strokeStyle=colors[fg];const d=Math.min(W,H), motif=x+y===0?[3,1,5,4,7,2][work.detail%6]:Math.floor(r()*10);
   if(r()<.5){ctx.translate(W,0);ctx.scale(-1,1)}
   function disk(cx,cy,rad){ctx.beginPath();ctx.arc(cx,cy,rad,0,Math.PI*2);ctx.fill()}
-  if(motif===1)disk(W/2,H/2,d*.36);
+  if(motif===1)disk(W/2+d*.075*Math.sin(time*.58),H/2,d*.36);
   if(motif===2)disk(0,H,d);
-  if(motif===3){for(let k=1;k<=8;k++){ctx.lineWidth=d*.052;ctx.beginPath();ctx.arc(0,H,d*k*.136,0,Math.PI*2);ctx.stroke()}}
+  if(motif===3){for(let k=1;k<=8;k++){ctx.lineWidth=d*.052;ctx.beginPath();ctx.arc(0,H,d*k*.136*(1+.065*Math.sin(time*.63)),0,Math.PI*2);ctx.stroke()}}
   if(motif===4){for(let k=0;k<8;k++)ctx.fillRect(W*k/8,0,W/17,H)}
   if(motif===5){ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.fill()}
   if(motif===6){for(let j=0;j<4;j++)for(let i=0;i<5;i++)disk(W*(i+.5)/5,H*(j+.5)/4,d*.037)}
   if(motif===7){for(let i=0;i<5;i++)ctx.fillRect(i*W/5,H*(4-i)/5,W/5+1,H)}
   ctx.restore();
  }
+ if(time){applyGrain(ctx,w,h);return}
  const pixels=ctx.getImageData(0,0,w,h),data=pixels.data;
  for(let i=0;i<data.length;i+=4){const noise=(r()-.5)*12;data[i]+=noise;data[i+1]+=noise;data[i+2]+=noise}
  ctx.putImageData(pixels,0,0);
@@ -70,13 +73,15 @@ function decode(hash=location.hash.slice(1)){
  return m?{mode:+m[1],seed:parseInt(m[2],16),palette:+m[3],detail:+m[4],format:m[5]}:fresh();
 }
 function circle(ctx,x,y,r,color){ctx.fillStyle=color;ctx.beginPath();ctx.arc(x,y,r,0,2*Math.PI);ctx.fill()}
-function landscape(target,w,h,work){
- target.width=w;target.height=h;
+function landscape(target,w,h,work,time=0){
+ if(target.width!==w)target.width=w;
+ if(target.height!==h)target.height=h;
+ target.getContext('2d').setTransform(1,0,0,1,0,0);
  const ctx=target.getContext('2d'),r=rng(work.seed),c=palettes[work.palette].slice(1),d=Math.min(w,h);
  ctx.fillStyle=c[3];ctx.fillRect(0,0,w,h);
  const flip=r()<.5;if(flip){ctx.translate(w,0);ctx.scale(-1,1)}
  if(work.mode===1){
-  const phase=r()*6, drift=.8+r()*1.8, swell=.065+r()*.08;
+  const phase=r()*6+time*.18, drift=.8+r()*1.8, swell=.065+r()*.08;
   circle(ctx,w*(.18+.36*r()),h*(.22+.08*r()),d*(.085+.055*r()),c[work.detail%2?2:1]);
   const inks=[4,2,0,4,5,0],bands=[.39,.53,.555,.69,.79,.92];
   bands.forEach((base,i)=>{
@@ -91,18 +96,21 @@ function landscape(target,w,h,work){
  }else{
   const anchor=w*(.24+.22*r()),level=h*(.27+.14*r()),radius=d*(.125+.09*r());
   const base=h*(.71+.1*r()),span=w*(.32+.33*r());
-  circle(ctx,anchor+(work.detail%5)*w*.025,level,radius,c[1]);
+  circle(ctx,anchor+(work.detail%5)*w*.025,level-d*.018*Math.sin(time*.34),radius,c[1]);
   ctx.fillStyle=c[0];ctx.fillRect(w*.12,base,span,d*(.008+r()*.02));
   ctx.fillStyle=c[4];
   if(r()<.55){ctx.fillRect(w*.12+span,base-d*.12,d*.022,d*.12)}
   else{ctx.fillRect(w*.12,base+d*.055,span*.4,d*.008)}
  }
+ if(time){applyGrain(ctx,w,h);return}
  const pixels=ctx.getImageData(0,0,w,h),data=pixels.data;
  for(let i=0;i<data.length;i+=4){const n=(r()-.5)*10;data[i]+=n;data[i+1]+=n;data[i+2]+=n}
  ctx.putImageData(pixels,0,0);
 }
-function paperScenes(target,w,h,work){
- target.width=w;target.height=h;
+function paperScenes(target,w,h,work,time=0){
+ if(target.width!==w)target.width=w;
+ if(target.height!==h)target.height=h;
+ target.getContext('2d').setTransform(1,0,0,1,0,0);
  const g=target.getContext('2d'),r=rng(work.seed),c=palettes[work.palette].slice(1);
  const W=1000*w/h,H=1000;
  g.scale(h/H,h/H);
@@ -123,7 +131,9 @@ function paperScenes(target,w,h,work){
    const vertices=previous.map((_,i)=>{const a=phase+i*2*Math.PI/n+twist,rad=radius*(.92+r()*.16);return [cx+rad*Math.cos(a),cy+rad*Math.sin(a)]});
    for(let i=0;i<n;i++){
     const j=(i+1)%n, tone=ring===0?accent:c[(i%3+ring+Math.floor(r()*3))%6];
-    shape([previous[i],vertices[i],vertices[j],previous[j]],tone,true);
+    const pane=[previous[i],vertices[i],vertices[j],previous[j]];
+    shape(pane,tone,true);
+    if(time){g.globalAlpha=.12*Math.pow(.5+.5*Math.cos(i*2*Math.PI/n-ring*.34-time*.45),4)*Math.min(time,1);shape(pane,c[3]);g.globalAlpha=1}
    }
    previous=vertices;
   }
@@ -140,7 +150,8 @@ function paperScenes(target,w,h,work){
     const columns=2+Math.floor(r()*3);
     for(let j=0;j<columns;j++)for(let k=0;k<2;k++){
      const dx=x+(j+.32)*bw/columns,dy=top+16+k*39;
-     rect(dx,dy,bw/columns*.37,19,c[5]);rect(dx,dy+19,bw/columns*.42,3,c[3]);
+     rect(dx,dy,bw/columns*.37,19,c[5]);
+     if(time){g.globalAlpha=.85*Math.pow(.5+.5*Math.sin(dx*.17+dy*.23+time*.52),7)*Math.min(time,1);rect(dx,dy,bw/columns*.37,19,c[2]);g.globalAlpha=1}rect(dx,dy+19,bw/columns*.42,3,c[3]);
     }
     x+=bw;
    }
@@ -149,7 +160,7 @@ function paperScenes(target,w,h,work){
   // Paired lanceolate leaves and small print-like flower heads.
   rect(0,0,W,H,c[0]);circle(g,W*(.2+.6*r()),170+r()*180,85,accent);
   for(let i=0;i<Math.ceil(W/28);i++){
-   const x=r()*W,y=120+710*r(),lean=(r()-.5)*235,stem=c[i%3===0?3:4],length=H-y;
+   const x=r()*W,y=120+710*r(),lean=(r()-.5)*235+Math.sin(time*.85+x*.003)*Math.min(time,1)*26*(1-y/H),stem=c[i%3===0?3:4],length=H-y;
    g.beginPath();g.moveTo(x,H+10);g.quadraticCurveTo(x+lean*.24,y+length*.58,x+lean,y);
    g.strokeStyle=stem;g.lineWidth=2+r()*3;g.stroke();
    const leaves=3+Math.floor(r()*5);
@@ -168,26 +179,56 @@ function paperScenes(target,w,h,work){
   g.save();g.translate(cx,cy);g.rotate(tilt);
   const count=5+Math.floor(r()*4);
   for(let i=1;i<=count;i++){
-   const a=80+i*(W*.64/count),b=38+i*42,theta=r()*Math.PI*2;
+   const a=80+i*(W*.64/count),b=38+i*42,theta=r()*Math.PI*2+time*.32/Math.sqrt(i);
    g.beginPath();g.ellipse(0,0,a,b,0,0,Math.PI*2);g.strokeStyle=c[4];g.lineWidth=i%3?1.4:3;g.stroke();
    circle(g,a*Math.cos(theta),b*Math.sin(theta),6+r()*22,c[[1,2,3,4][i%4]]);
   }
   circle(g,0,0,44+32*r(),accent);g.restore();
  }
  // Fine paper grain uses its own stream to keep the geometry resolution-independent.
+ if(time){applyGrain(g,w,h);return}
  const image=g.getImageData(0,0,w,h),p=image.data,grain=rng(work.seed^0xa54ff53a);
  for(let i=0;i<p.length;i+=4){const n=(grain()-.5)*11;p[i]+=n;p[i+1]+=n;p[i+2]+=n}
  g.putImageData(image,0,0);
 }
 
-function draw(target,w,small=false){
+let grainPattern;
+function applyGrain(ctx,w,h){
+ if(!grainPattern){
+  const tile=document.createElement('canvas');tile.width=tile.height=128;
+  const brush=tile.getContext('2d'),img=brush.createImageData(128,128),r=rng(41383);
+  for(let i=0;i<img.data.length;i+=4){const shade=r()<.5?0:255;img.data[i]=img.data[i+1]=img.data[i+2]=shade;img.data[i+3]=Math.floor(r()*11)}
+  brush.putImageData(img,0,0);grainPattern=ctx.createPattern(tile,'repeat');
+ }
+ ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle=grainPattern;ctx.fillRect(0,0,w,h);
+}
+function draw(target,w,small=false,time=0){
  const width=w.format==='p'?(small?225:900):(small?360:1800), height=w.format==='p'?(small?290:1160):(small?170:850);
- (w.mode===0?collage:w.mode<3?landscape:paperScenes)(target,width,height,w);
+ (w.mode===0?collage:w.mode<3?landscape:paperScenes)(target,width,height,w,time);
 }
 let work=decode(),trail=[];
 const samples=el('samples'),vary=el('vary');
 function closeSamples(){samples.hidden=true;vary.setAttribute('aria-expanded','false');samples.replaceChildren()}
+const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+let playing=!reduced.matches,visible=true,ticket=0,last=null,elapsed=0;
+try{const pref=localStorage.getItem('chromafield.motion');if(pref==='off'||pref==='on'&&!reduced.matches)playing=pref==='on'}catch{}
+function clock(){
+ cancelAnimationFrame(ticket);last=null;
+ el('motion').textContent=playing?'暂停动态':'播放动态';
+ if(!playing||document.hidden||!visible||wall.open)return;
+ function frame(now){
+  if(last===null)last=now;
+  if(now-last>=1000/24){elapsed+=Math.min(now-last,125)/1000;last=now;draw(canvas,work,false,elapsed)}
+  ticket=requestAnimationFrame(frame);
+ }
+ ticket=requestAnimationFrame(frame);
+}
+el('motion').onclick=()=>{playing=!playing;try{localStorage.setItem('chromafield.motion',playing?'on':'off')}catch{}clock()};
+reduced.addEventListener('change',e=>{if(e.matches){playing=false;clock()}});
+document.addEventListener('visibilitychange',clock);
+new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;clock()}).observe(canvas);
 function render(){
+ elapsed=0;clock();
  closeSamples();draw(canvas,work);
  canvas.setAttribute('aria-label',modes[work.mode]+' · '+palettes[work.palette][0]);
  el('name').textContent=palettes[work.palette][0];
@@ -238,8 +279,8 @@ function showWall(){
   btn.onclick=()=>{wall.close();apply(item);el('openWall').focus()};wallObserver.observe(thumb);
  }
 }
-el('openWall').onclick=()=>{wall.showModal();showWall()};el('closeWall').onclick=()=>wall.close();
-wall.addEventListener('close',()=>wallObserver?.disconnect());
+el('openWall').onclick=()=>{wall.showModal();clock();showWall()};el('closeWall').onclick=()=>wall.close();
+wall.addEventListener('close',()=>{wallObserver?.disconnect();clock()});
 window.addEventListener('storage',e=>{if(e.key===storageKey||e.key===null){syncFavorite();if(wall.open)showWall()}});
 
 window.addEventListener('hashchange',()=>{trail=[];work=decode();render()});render();
