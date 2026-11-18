@@ -4,9 +4,10 @@
 *{box-sizing:border-box}body{margin:0;background:#f7f5ec;color:#26271f;font-family:"Helvetica Neue",Arial,"PingFang SC",sans-serif}main{max-width:1600px;margin:auto;padding:24px clamp(16px,4vw,76px) 16px}header,footer,.tools,.brand,.caption,.signature{display:flex;align-items:center}header,footer,.caption{justify-content:space-between}header{padding-bottom:18px;border-bottom:1px solid #bdbaae}.brand{gap:12px;font-size:23px;font-weight:700;letter-spacing:-1.2px}.mark{width:25px;height:25px;background:conic-gradient(#f46434 25%,#293e72 0 50%,#e6b93e 0 75%,#253b34 0);border-radius:50%}.tools{gap:6px}button{background:transparent;border:1px solid #c9c6bb;color:inherit;border-radius:40px;font:inherit;font-size:13px;cursor:pointer;padding:9px 15px}button:hover{background:#e4e1d6}button:focus-visible{outline:3px solid #747bac;outline-offset:3px}.hero{display:flex;align-items:baseline;gap:18px;padding:22px 0 18px}h1{font-family:Georgia,"Songti SC",serif;font-size:clamp(32px,4vw,64px);letter-spacing:-.065em;line-height:1.06;font-weight:normal;margin:0}.cn{font-size:16px;letter-spacing:.25em}.art{background:#ded6bd;position:relative;overflow:hidden}canvas{width:100%;height:min(64svh,760px);display:block}.caption{padding:17px 0 21px;border-bottom:1px solid #bdbaae;gap:12px}.signature{gap:12px}.name{font-family:Georgia,serif;font-size:clamp(18px,2vw,30px)}.code{color:#67685e;font:11px monospace;letter-spacing:.1em}.chips{display:flex;gap:4px}.chips i{height:17px;width:17px;border-radius:50%;border:1px solid #0001}footer{padding-top:16px;gap:10px}#next{background:#24271f;border-color:#24271f;color:#fff;padding:10px 20px}#next:hover{background:#43483f}#note{color:#626359;font-size:12px}.toast{position:fixed;bottom:25px;left:50%;transform:translateX(-50%);background:#23271f;color:white;padding:10px 20px;border-radius:30px;font-size:13px}.toast:empty{display:none}@media(max-width:600px){main{padding-top:15px}header{padding-bottom:13px}.hero{padding:18px 0 13px}.brand{font-size:19px}.tools button{font-size:12px;padding:8px 11px}canvas{height:57svh}.signature{gap:5px;align-items:flex-start;flex-direction:column}.chips i{width:14px;height:14px}.caption{padding:12px 0}.cn{font-size:14px}}
 
 canvas{height:auto}.modes,.actions{display:flex;align-items:center;gap:5px}.modes{margin-left:auto}.modes button{border-color:transparent}.modes button[aria-pressed=true]{background:#e6e3d8;border-color:#c8c4b6}.actions button:disabled{opacity:.38;cursor:default}.samples{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:16px}.samples[hidden]{display:none}.samples button{padding:6px;background:#eeece2;border-radius:5px;text-align:left}.samples canvas{width:100%;height:auto;max-height:170px;object-fit:contain}.samples span{display:block;padding:7px 3px 1px}.samples button:hover{background:#dedccc}.hero{flex-wrap:wrap}.actions{flex-wrap:wrap}footer{flex-wrap:wrap}@media(max-width:600px){.modes{flex-basis:100%;margin-left:0}.hero{gap:10px}.modes button{padding:6px 12px}.samples{gap:5px}.samples button{padding:3px}#note{display:none}.actions{width:100%}#next{margin-left:auto}}
+.modes{flex-wrap:wrap}.tools{flex-wrap:wrap}.modes button{white-space:nowrap}.hero{row-gap:10px}dialog{border:1px solid #c9c6bb;background:#f7f5ec;color:inherit;width:min(800px,92vw);max-height:80svh;padding:20px}dialog::backdrop{background:#25251ece}dialog h2{margin:0;font:26px Georgia,serif}#wallHint{font-size:13px;color:#626359}#wallGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(145px,100%),1fr));gap:12px}#wallGrid button{border:0;border-radius:0;padding:0;text-align:left}#wallGrid canvas{width:100%;height:115px;object-fit:contain;background:#e9e6db}#wallGrid span{display:block;padding:6px 0;font-size:12px}@media(max-width:720px){.modes{margin-left:0;width:100%}.tools{justify-content:flex-end}.tools button{padding:7px 9px}.brand{flex-shrink:0}.modes button{padding:5px 9px}.actions button{padding:8px 12px}}@media(max-width:380px){.brand{font-size:15px;gap:4px}.mark{width:16px;height:16px}}
 </style>
-<main><header><div class="brand"><i class="mark"></i>Chroma Field</div><div class="tools"><button id="share">复制链接</button><button id="save">保存图片 ↓</button></div></header>
-<div class="hero"><h1>Color Studies</h1><span class="cn">色间</span><div class="modes" role="group" aria-label="选择画风"><button data-mode="0">色纸拼贴</button><button data-mode="1">潮汐</button><button data-mode="2">静场</button></div></div><div class="art"><canvas id="art" aria-label="由不同大小的色面、弧线、条纹拼成的随机几何版画"></canvas></div><div class="caption"><div class="signature"><strong class="name" id="name"></strong><span class="code" id="edition"></span></div><div class="chips" id="chips" aria-label="本幅配色"></div></div><footer><span id="note">空格键 · 切换构图</span><div class="actions"><button id="undo" disabled>↶ 撤回</button><button id="vary" aria-expanded="false" aria-controls="samples">变奏</button><button id="next">换一幅 ↗</button></div></footer><section class="samples" id="samples" hidden aria-label="选择变奏小样"></section></main><div class="toast" role="status" id="toast"></div>
+<main><header><div class="brand"><i class="mark"></i>Chroma Field</div><div class="tools"><button id="openWall">收藏墙</button><button id="share">复制链接</button><button id="save">保存图片 ↓</button></div></header>
+<div class="hero"><h1>Color Studies</h1><span class="cn">色间</span><div class="modes" role="group" aria-label="选择画风"><button data-mode="0">色纸拼贴</button><button data-mode="1">潮汐</button><button data-mode="2">静场</button><button data-mode="3">琉璃花窗</button><button data-mode="4">山城街巷</button><button data-mode="5">野花手记</button><button data-mode="6">星轨图谱</button></div></div><div class="art"><canvas id="art" aria-label="由不同大小的色面、弧线、条纹拼成的随机几何版画"></canvas></div><div class="caption"><div class="signature"><strong class="name" id="name"></strong><span class="code" id="edition"></span></div><div class="chips" id="chips" aria-label="本幅配色"></div></div><footer><span id="note">空格键 · 切换构图</span><div class="actions"><button id="favorite">♡ 收藏</button><button id="undo" disabled>↶ 撤回</button><button id="vary" aria-expanded="false" aria-controls="samples">变奏</button><button id="next">换一幅 ↗</button></div></footer><section class="samples" id="samples" hidden aria-label="选择变奏小样"></section></main><dialog id="wall" aria-labelledby="wallTitle"><header><h2 id="wallTitle">收藏墙</h2><button id="closeWall" autofocus>关闭</button></header><p id="wallHint"></p><div id="wallGrid"></div></dialog><div class="toast" role="status" id="toast"></div>
 <script>
 'use strict';
 const palettes=[
@@ -14,7 +15,10 @@ const palettes=[
  ['海风来信','#253e72','#ed8457','#c1cdb0','#f2e6c9','#77a9ba','#263d48'],
  ['山野唱片','#264d40','#c76d43','#b4bd76','#eddeb9','#799e91','#35352f'],
  ['日落电台','#663b52','#ed7754','#eeb568','#f0d8b5','#a79abb','#362d42'],
- ['靛蓝海岸','#224776','#dc633e','#e9c45f','#eae2c9','#85aaa1','#253744']
+ ['靛蓝海岸','#224776','#dc633e','#e9c45f','#eae2c9','#85aaa1','#253744'],
+ ['春日玻璃','#194b50','#ed8390','#f6bd49','#f6ead6','#82bfaa','#29334a'],
+ ['紫藤夜曲','#46416c','#da889c','#e3af76','#f1e5cf','#a99bc9','#29263c'],
+ ['柠檬汽水','#14585d','#f08447','#e4ce46','#f7edc7','#9bbf77','#263e41']
 ];
 const el=id=>document.getElementById(id), canvas=el('art');
 const randomSeed=()=>crypto.getRandomValues(new Uint32Array(1))[0];
@@ -54,16 +58,15 @@ function collage(target,w,h,work){
  for(let i=0;i<data.length;i+=4){const noise=(r()-.5)*12;data[i]+=noise;data[i+1]+=noise;data[i+2]+=noise}
  ctx.putImageData(pixels,0,0);
 }
-const modes=['色纸拼贴','潮汐','静场'];
+const modes=['色纸拼贴','潮汐','静场','琉璃花窗','山城街巷','野花手记','星轨图谱'];
 const mobile=()=>matchMedia('(max-width:600px)').matches;
-const fresh=(mode=randomSeed()%3)=>({mode,seed:randomSeed(),palette:randomSeed()%palettes.length,detail:0,format:mobile()?'p':'l'});
+const fresh=(mode=randomSeed()%modes.length)=>({mode,seed:randomSeed(),palette:randomSeed()%palettes.length,detail:0,format:mobile()?'p':'l'});
 const hex=n=>n.toString(16).padStart(8,'0');
 function encode(w){return ['v2',w.mode,hex(w.seed),w.palette,w.detail,w.format].join('-')}
-function decode(){
- const hash=location.hash.slice(1);
+function decode(hash=location.hash.slice(1)){
  const old=/^([0-9a-f]{8})(?:-([pl]))?$/i.exec(hash);
- if(old){const seed=parseInt(old[1],16);return {mode:0,seed,palette:seed%palettes.length,detail:0,format:old[2]||(mobile()?'p':'l')}}
- const m=/^v2-([012])-([0-9a-f]{8})-([0-4])-([0-9]{1,8})-([pl])$/i.exec(hash);
+ if(old){const seed=parseInt(old[1],16);return {mode:0,seed,palette:seed%5,detail:0,format:old[2]||(mobile()?'p':'l')}}
+ const m=/^v2-([0-6])-([0-9a-f]{8})-([0-7])-([0-9]{1,8})-([pl])$/i.exec(hash);
  return m?{mode:+m[1],seed:parseInt(m[2],16),palette:+m[3],detail:+m[4],format:m[5]}:fresh();
 }
 function circle(ctx,x,y,r,color){ctx.fillStyle=color;ctx.beginPath();ctx.arc(x,y,r,0,2*Math.PI);ctx.fill()}
@@ -98,9 +101,88 @@ function landscape(target,w,h,work){
  for(let i=0;i<data.length;i+=4){const n=(r()-.5)*10;data[i]+=n;data[i+1]+=n;data[i+2]+=n}
  ctx.putImageData(pixels,0,0);
 }
+function paperScenes(target,w,h,work){
+ target.width=w;target.height=h;
+ const g=target.getContext('2d'),r=rng(work.seed),c=palettes[work.palette].slice(1);
+ const W=1000*w/h,H=1000;
+ g.scale(h/H,h/H);
+ const accent=c[[1,2,4][work.detail%3]];
+ function rect(x,y,a,b,ink){g.fillStyle=ink;g.fillRect(x,y,a,b)}
+ function shape(points,ink,seam=false){
+  g.beginPath();points.forEach(([x,y],i)=>i?g.lineTo(x,y):g.moveTo(x,y));g.closePath();g.fillStyle=ink;g.fill();
+  if(seam){g.strokeStyle=c[5];g.lineWidth=6;g.lineJoin='round';g.stroke()}
+ }
+ function oval(x,y,a,b,angle,ink){g.beginPath();g.ellipse(x,y,a,b,angle,0,Math.PI*2);g.fillStyle=ink;g.fill()}
+ rect(0,0,W,H,c[3]);
+ if(work.mode===3){
+  // Facets share their vertices, like glass seated in a lead frame.
+  const cx=W*(.28+.44*r()),cy=H*(.28+.38*r()),n=12+2*Math.floor(r()*4),phase=r()*.5;
+  let previous=Array.from({length:n},()=>[cx,cy]);
+  for(let ring=0;ring<7;ring++){
+   const radius=[54,128,227,365,560,910,3200][ring],twist=(ring%2?.42:0)*2*Math.PI/n;
+   const vertices=previous.map((_,i)=>{const a=phase+i*2*Math.PI/n+twist,rad=radius*(.92+r()*.16);return [cx+rad*Math.cos(a),cy+rad*Math.sin(a)]});
+   for(let i=0;i<n;i++){
+    const j=(i+1)%n, tone=ring===0?accent:c[(i%3+ring+Math.floor(r()*3))%6];
+    shape([previous[i],vertices[i],vertices[j],previous[j]],tone,true);
+   }
+   previous=vertices;
+  }
+ }else if(work.mode===4){
+  // Successive streets overlap, with fewer, larger façades toward the viewer.
+  circle(g,W*(.18+.64*r()),155+65*r(),69,accent);
+  for(let layer=0;layer<3;layer++){
+   let x=-130*r();const base=530+layer*226;
+   while(x<W){
+    const bw=(70+95*r())*(1+layer*.52),top=base-90-r()*195,ink=c[[4,2,1,0,3][Math.floor(r()*5)]];
+    rect(x,top,bw,base-top+100,ink);
+    if(r()<.53)shape([[x-4,top],[x+bw*.5,top-bw*(.18+.22*r())],[x+bw+4,top]],c[5]);
+    else {rect(x+9,top-12,bw*.45,12,ink);rect(x+bw*.72,top-29,bw*.09,29,ink)}
+    const columns=2+Math.floor(r()*3);
+    for(let j=0;j<columns;j++)for(let k=0;k<2;k++){
+     const dx=x+(j+.32)*bw/columns,dy=top+16+k*39;
+     rect(dx,dy,bw/columns*.37,19,c[5]);rect(dx,dy+19,bw/columns*.42,3,c[3]);
+    }
+    x+=bw;
+   }
+  }
+ }else if(work.mode===5){
+  // Paired lanceolate leaves and small print-like flower heads.
+  rect(0,0,W,H,c[0]);circle(g,W*(.2+.6*r()),170+r()*180,85,accent);
+  for(let i=0;i<Math.ceil(W/28);i++){
+   const x=r()*W,y=120+710*r(),lean=(r()-.5)*235,stem=c[i%3===0?3:4],length=H-y;
+   g.beginPath();g.moveTo(x,H+10);g.quadraticCurveTo(x+lean*.24,y+length*.58,x+lean,y);
+   g.strokeStyle=stem;g.lineWidth=2+r()*3;g.stroke();
+   const leaves=3+Math.floor(r()*5);
+   for(let k=1;k<=leaves;k++){
+    const t=k/(leaves+1),lx=x+lean*(.48*t+.52*t*t),ly=H+10-t*length,side=k%2?1:-1;
+    const size=11+21*r();oval(lx+side*size*.65,ly-size*.55,size,size*.25,side*-.62,stem);
+   }
+   if(i%3===0){const petals=5+Math.floor(4*r()),rad=9+13*r();
+    for(let j=0;j<petals;j++){let a=j*2*Math.PI/petals;oval(x+lean+Math.cos(a)*rad,y+Math.sin(a)*rad,rad*.85,rad*.45,a,i%2?c[2]:c[1])}
+    circle(g,x+lean,y,rad*.39,c[5]);
+   }
+  }
+ }else{
+  rect(0,0,W,H,c[5]);for(let i=0;i<W*.18;i++)circle(g,r()*W,r()*H, .7+r()*1.5,c[3]);
+  const cx=W*(.3+.4*r()),cy=H*(.36+.28*r()),tilt=-.45+r()*.9;
+  g.save();g.translate(cx,cy);g.rotate(tilt);
+  const count=5+Math.floor(r()*4);
+  for(let i=1;i<=count;i++){
+   const a=80+i*(W*.64/count),b=38+i*42,theta=r()*Math.PI*2;
+   g.beginPath();g.ellipse(0,0,a,b,0,0,Math.PI*2);g.strokeStyle=c[4];g.lineWidth=i%3?1.4:3;g.stroke();
+   circle(g,a*Math.cos(theta),b*Math.sin(theta),6+r()*22,c[[1,2,3,4][i%4]]);
+  }
+  circle(g,0,0,44+32*r(),accent);g.restore();
+ }
+ // Fine paper grain uses its own stream to keep the geometry resolution-independent.
+ const image=g.getImageData(0,0,w,h),p=image.data,grain=rng(work.seed^0xa54ff53a);
+ for(let i=0;i<p.length;i+=4){const n=(grain()-.5)*11;p[i]+=n;p[i+1]+=n;p[i+2]+=n}
+ g.putImageData(image,0,0);
+}
+
 function draw(target,w,small=false){
  const width=w.format==='p'?(small?225:900):(small?360:1800), height=w.format==='p'?(small?290:1160):(small?170:850);
- (w.mode===0?collage:landscape)(target,width,height,w);
+ (w.mode===0?collage:w.mode<3?landscape:paperScenes)(target,width,height,w);
 }
 let work=decode(),trail=[];
 const samples=el('samples'),vary=el('vary');
@@ -112,7 +194,7 @@ function render(){
  el('edition').textContent=modes[work.mode]+' / '+hex(work.seed).toUpperCase();
  el('chips').replaceChildren(...palettes[work.palette].slice(1).map(c=>{const i=document.createElement('i');i.style.background=c;i.title=c;return i}));
  document.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.mode===work.mode));
- el('undo').disabled=!trail.length;
+ el('undo').disabled=!trail.length;syncFavorite();
 }
 function apply(w,remember=true){if(remember){trail.push(work);if(trail.length>64)trail.shift()}work=w;history.replaceState(null,'','#'+encode(w));render()}
 function next(){apply(fresh(work.mode))}
@@ -126,9 +208,39 @@ vary.onclick=()=>{
  draw(preview,option,true);label.textContent=['换配色','换构图','微调'][i];btn.append(preview,label);btn.onclick=()=>{apply(option);vary.focus()};samples.append(btn)});
  samples.hidden=false;vary.setAttribute('aria-expanded','true');samples.scrollIntoView({block:'nearest'});
 };
-document.addEventListener('keydown',e=>{if(e.code==='Space'&&!e.repeat&&!e.target.closest('button,input')){e.preventDefault();next()}});
+document.addEventListener('keydown',e=>{if(!wall.open&&e.code==='Space'&&!e.repeat&&!e.target.closest('button,input')){e.preventDefault();next()}});
 let timer;function notify(s){el('toast').textContent=s;clearTimeout(timer);timer=setTimeout(()=>el('toast').textContent='',2200)}
 el('share').onclick=async()=>{const url=new URL(location.href);url.hash=encode(work);try{await navigator.clipboard.writeText(url.href);notify('已复制作品链接')}catch{prompt('复制作品链接',url.href)}};
 el('save').onclick=()=>{const id=encode(work);canvas.toBlob(blob=>{if(!blob)return;const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='chromafield-'+id+'.png';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),3000)},'image/png')};
+const storageKey='chromafield.wall.v1',wall=el('wall');
+function getWall(){
+ try{const list=JSON.parse(localStorage.getItem(storageKey)||'[]');return Array.isArray(list)?[...new Set(list.filter(id=>typeof id==='string'&&/^v2-[0-6]-[0-9a-f]{8}-[0-7]-[0-9]{1,8}-[pl]$/.test(id)))]:[]}
+ catch{return []}
+}
+function syncFavorite(){
+ const added=getWall().includes(encode(work));
+ el('favorite').textContent=added?'♥ 已收藏':'♡ 收藏';
+ el('favorite').setAttribute('aria-pressed',added);
+}
+el('favorite').onclick=()=>{
+ const key=encode(work),list=getWall(),added=list.includes(key);
+ try{localStorage.setItem(storageKey,JSON.stringify(added?list.filter(x=>x!==key):[key,...list]));syncFavorite();notify(added?'已从收藏墙移出':'已加入收藏墙')}
+ catch{notify('当前浏览器无法保存收藏，可复制作品链接')}
+};
+let wallObserver;
+function showWall(){
+ wallObserver?.disconnect();const grid=el('wallGrid'),list=getWall();grid.replaceChildren();
+ el('wallHint').textContent=list.length?'保存在此浏览器 · '+list.length+' 幅':'看到喜欢的画时，点「♡ 收藏」，它就会出现在这里。';
+ wallObserver=new IntersectionObserver(entries=>{for(const e of entries)if(e.isIntersecting){draw(e.target,decode(e.target.dataset.id),true);wallObserver.unobserve(e.target)}},{root:wall,rootMargin:'200px'});
+ for(const key of list){
+  const item=decode(key),btn=document.createElement('button'),thumb=document.createElement('canvas'),label=document.createElement('span');
+  thumb.dataset.id=key;label.textContent=modes[item.mode]+' · '+palettes[item.palette][0];btn.append(thumb,label);grid.append(btn);
+  btn.onclick=()=>{wall.close();apply(item);el('openWall').focus()};wallObserver.observe(thumb);
+ }
+}
+el('openWall').onclick=()=>{wall.showModal();showWall()};el('closeWall').onclick=()=>wall.close();
+wall.addEventListener('close',()=>wallObserver?.disconnect());
+window.addEventListener('storage',e=>{if(e.key===storageKey||e.key===null){syncFavorite();if(wall.open)showWall()}});
+
 window.addEventListener('hashchange',()=>{trail=[];work=decode();render()});render();
 </script></html>
